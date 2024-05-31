@@ -16,6 +16,7 @@ using Microsoft.Vbe.Interop.Forms;
 using System.Runtime.Remoting.Channels;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using ASRS.Properties;
 
 namespace ASRS.Component
 {
@@ -23,7 +24,8 @@ namespace ASRS.Component
     {
         private Splash spash = null;
         private frmUserAccount _userAccountDlg = null;
-        private Database db = null;
+
+        private dbAccess db = null;
 
         private delegate void screenSwitchingeDelegrate(System.Windows.Forms.Control from);
         screenSwitchingeDelegrate screenSwitch;
@@ -31,6 +33,8 @@ namespace ASRS.Component
         public Manager()
         {
             InitializeComponent();
+
+            _ = new Setting();
 
             screenSwitch = new screenSwitchingeDelegrate(layoutForm);
 
@@ -48,20 +52,23 @@ namespace ASRS.Component
         {
             if(db == null)
             {
-                db = new Database();
+                db = new dbAccess();
             }
 
             string m = "";
-            if(db.connect())
+
+            try
             {
+                db.connect(Setting.instance.conString);//Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\10_Work\Robot\ASRS\ASRS_db.accdb
                 m = "Database connection was established!";
             }
-            else
+            catch(Exception ex)
             {
-                m = "Database connection was failed!";
+                m = "Database connection was failed!\n" + ex.ToString();
             }
 
-            Task.Run(async () => {
+            Task.Run(async () =>
+            {
                 await Task.Delay(1000);
                 spash.showMessage(m);
             });

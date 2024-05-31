@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ASRS.Properties;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace ASRS.libs
             if (String.IsNullOrEmpty(dbPath))
             {
                 _dbPath = localPath;
-                _dbName = "db.accdb";
+                _dbName = "ASRS_db.accdb";
             }
             else
             {
@@ -68,8 +69,8 @@ namespace ASRS.libs
             get
             {
                 if(File.Exists(Path.Combine(_dbPath,_dbName)))
-                {
-                    return $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={_dbPath}{Path.PathSeparator}{_dbName};Persist Security Info=False;";
+                {                    
+                    return  $"Provider = Microsoft.ACE.OLEDB.12.0; Data Source ={locationDB()}";
                 }
                 else
                 {

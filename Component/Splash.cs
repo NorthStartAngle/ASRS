@@ -46,10 +46,10 @@ namespace ASRS.Component
                 lblStatus.Text = message;
             }
 
-            Task.Run(async () => {
+            /*Task.Run(async () => {
                 await Task.Delay(2000);
                 stateChanged?.Invoke(this, new SplashEventArgs(SplashEventSubject.completed));
-            });
+            });*/
         }
     }
 }
