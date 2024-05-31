@@ -74,11 +74,21 @@
     <Compile Include="Component\ProductLookup.Designer.cs">
       <DependentUpon>ProductLookup.cs</DependentUpon>
     </Compile>
-    <Compile Include="Component\Splash.cs" />
+    <Compile Include="Component\Splash.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Component\Splash.Designer.cs">
       <DependentUpon>Splash.cs</DependentUpon>
     </Compile>
+    <Compile Include="Component\TextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Component\TextBox.Designer.cs">
+      <DependentUpon>TextBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="libs\ConnectorMetadata.cs" />
+    <Compile Include="libs\SplashEvent.cs" />
+    <Compile Include="libs\SQLite.cs" />
     <Compile Include="libs\Supervisor.cs" />
     <Compile Include="libs\SupervisorEvents.cs" />
     <Compile Include="Manager.cs">
@@ -98,8 +108,6 @@
     <Compile Include="libs\DataStruct.cs" />
     <Compile Include="libs\DisconnectReason.cs" />
     <Compile Include="libs\Setting.cs" />
-    <Compile Include="libs\SQLite.cs" />
-    <Compile Include="libs\SQLiteAsync.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="libs\ConnectorEvents.cs" />
@@ -112,6 +120,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Component\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Component\TextBox.resx">
+      <DependentUpon>TextBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Manager.resx">
       <DependentUpon>Manager.cs</DependentUpon>
@@ -393,6 +404,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="android_google_icon.ico" />
+    <None Include="res\textbox_frame1.png" />
+    <None Include="res\load_1.gif" />
     <None Include="res\textbox-border-2.png" />
     <None Include="res\textbox-border-1.png" />
   </ItemGroup>

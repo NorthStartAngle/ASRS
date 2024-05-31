@@ -60,7 +60,7 @@ namespace ASRS.libs
 
         public string locationDB()
         {
-            return $"{_dbPath}{Path.PathSeparator}{_dbName}";
+            return $"{_dbPath}{'\\'}{_dbName}";
         }
 
         public string conString

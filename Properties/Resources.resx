@@ -241,6 +241,9 @@
   <data name="list_circle_sharp_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\list_circle_sharp_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="load_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\load_1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="login_48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\login-48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -322,6 +325,9 @@
   <data name="textbox_border_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\textbox-border-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="textbox_frame1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\textbox_frame1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="text_sharp_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\text_sharp_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -345,9 +351,6 @@
   </data>
   <data name="user_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\user-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="waiting" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\res\waiting.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="warranty_50" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\warranty-50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

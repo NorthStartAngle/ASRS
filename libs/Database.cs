@@ -12,6 +12,7 @@ namespace ASRS.libs
     public class Database
     {
         private SQLiteConnection _db = null;
+        private bool _isConnected = false;
 
         public Database() { }
 
@@ -21,24 +22,34 @@ namespace ASRS.libs
         }
         private bool connect(string dbPath)
         {
-            if(string.IsNullOrEmpty(dbPath))
+            if (string.IsNullOrEmpty(dbPath) || _db != null)
             {
-                if(_db != null) _db.Close();
-                _db = null;
-                return false;
+                return _isConnected;
             }
+
             try
             {
-                _db = new SQLiteConnection(new SQLiteConnectionString(dbPath, false));
-
+                //_db = new SQLiteConnection(new SQLiteConnectionString(dbPath, false));
+                _db = new SQLiteConnection(dbPath);
             }
+
             catch(Exception)
             {
                 return false;
             }
 
-            if (_db != null) return true;
+            if (_db != null)
+            {
+                _isConnected = true;
+                return true;
+            }
             return false;
+        }
+
+        public bool isConnected { 
+            get {
+                return _isConnected;
+            } 
         }
 
         public void createDatabase()
@@ -63,7 +74,7 @@ namespace ASRS.libs
         }
 
         ~Database() { 
-           _db.Close();
+           _db?.Close();
 
         }
     }

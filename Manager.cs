@@ -11,32 +11,60 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework.Forms;
-using LIB;
+using ASRS.libs;
 using Microsoft.Vbe.Interop.Forms;
 using System.Runtime.Remoting.Channels;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ASRS.Component
 {
     public partial class Manager : MetroFramework.Forms.MetroForm
     {
-        Splash spash = null;
-        frmUserAccount _userAccountDlg = null;
+        private Splash spash = null;
+        private frmUserAccount _userAccountDlg = null;
+        private Database db = null;
+
+        private delegate void screenSwitchingeDelegrate(System.Windows.Forms.Control from);
+        screenSwitchingeDelegrate screenSwitch;
+
         public Manager()
         {
             InitializeComponent();
+
+            screenSwitch = new screenSwitchingeDelegrate(layoutForm);
 
             this.StyleManager = this.managerStyle;
 
             spash = new Splash();
             spash.stateChanged += stateChanged;
 
+            _userAccountDlg = new frmUserAccount(this.managerStyle);
+
             layoutForm((System.Windows.Forms.Control)spash);
         }
 
         public void Initialize()
         {
-            _userAccountDlg = new frmUserAccount(this.StyleManager);
-            layoutForm((System.Windows.Forms.Control)_userAccountDlg);
+            if(db == null)
+            {
+                db = new Database();
+            }
+
+            string m = "";
+            if(db.connect())
+            {
+                m = "Database connection was established!";
+            }
+            else
+            {
+                m = "Database connection was failed!";
+            }
+
+            Task.Run(async () => {
+                await Task.Delay(1000);
+                spash.showMessage(m);
+            });
         }
 
         private void stateChanged(object sender,EventArgs e)
@@ -50,8 +78,20 @@ namespace ASRS.Component
                         Initialize();
                         break;
                     case SplashEventSubject.completed:
-                        _userAccountDlg = new frmUserAccount(this.managerStyle);
-                        layoutForm((System.Windows.Forms.Control)_userAccountDlg);
+                         
+                        spash.stateChanged -= stateChanged;
+                        
+
+                        if (bodyLayout.InvokeRequired)
+                        {                           
+                            Invoke(screenSwitch, (System.Windows.Forms.Control)_userAccountDlg);
+                        }
+                        else
+                        {
+                            layoutForm((System.Windows.Forms.Control)_userAccountDlg);
+                        }
+
+                        
                         break;
                     case SplashEventSubject.error:
                         break;
@@ -66,28 +106,20 @@ namespace ASRS.Component
         protected void layoutForm(System.Windows.Forms.Control form)
         {
             if (form != null) {
-
                 Size sz = form.Size;
 
-                if(bodyLayout.Controls.Count > 0) {
-                    this.bodyLayout.Controls.RemoveAt(0);
+                if (bodyLayout.Controls.Count > 0)
+                {
+                    bodyLayout.Controls.RemoveAt(0);
                 }
-                
-                this.bodyLayout.Controls.Add(form, 1, 1);
 
-                this.bodyLayout.RowStyles[1].SizeType = SizeType.Absolute;
-                this.bodyLayout.RowStyles[1].Height = sz.Height;
-                //this.bodyLayout.RowStyles[0].SizeType = SizeType.AutoSize;
-                //this.bodyLayout.RowStyles[2].SizeType = SizeType.AutoSize;
+                bodyLayout.Controls.Add(form, 1, 1);
 
-                this.bodyLayout.ColumnStyles[1].SizeType = SizeType.Absolute;
-                this.bodyLayout.ColumnStyles[1].Width = sz.Width;
-                //this.bodyLayout.ColumnStyles[0].SizeType = SizeType.AutoSize;
-                //this.bodyLayout.ColumnStyles[2].SizeType = SizeType.AutoSize;
+                bodyLayout.RowStyles[1].SizeType = SizeType.Absolute;
+                bodyLayout.RowStyles[1].Height = sz.Height;
 
-                //this.bodyLayout.BackColor = Common.convertStyleToColor((int)this.StyleManager.Style,Color.White);
-                this.bodyLayout.Invalidate();
-                //metroPanel1.Controls.Add( _userAccountDlg );
+                bodyLayout.ColumnStyles[1].SizeType = SizeType.Absolute;
+                bodyLayout.ColumnStyles[1].Width = sz.Width;
             }
         }
     }
