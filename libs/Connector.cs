@@ -193,9 +193,12 @@ namespace LIB
             _connectionMonitor = Task.Run(ConnectedMonitor, _token);
         }
         
-        public void ConnectWithRetries(int? timeoutMs = null)
+        public void ConnectWithRetries(int? timeoutMs = 1)
         {
-            if (timeoutMs != null && timeoutMs < 1) throw new ArgumentException("Timeout milliseconds must be greater than zero.");
+            if (timeoutMs != null && timeoutMs < 1)
+            {
+                Connect();return;
+            }
 
             if (IsConnected)
             {

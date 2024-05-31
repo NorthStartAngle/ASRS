@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Text;
 
 namespace LIB
@@ -9,6 +10,60 @@ namespace LIB
         static ushort unique_n2 = 0;
         static ushort unique_n3 = 0;
 
+        internal static Color convertStyleToColor(int styles, Color orgin)
+        {
+            Color ret = orgin;
+            switch (styles)
+	        {
+                case 0:
+                    break;
+                case 1:
+                    ret =Color.Black;
+                    break;
+                case 2:
+                    ret =Color.White;
+                    break;
+                case 3:
+                    ret =Color.Silver;
+                    break;
+                case 4:
+                    ret =Color.Blue;
+                    break;
+                case 5:
+                    ret =Color.Green;
+                    break;
+                case 6:
+                    ret =Color.Lime;
+                    break;
+                case 7:
+                    ret =Color.Teal;
+                    break;
+                case 8:
+                    ret =Color.Orange;
+                    break;
+                case 9:
+                    ret =Color.Brown;
+                    break;
+                case 10:
+                    ret =Color.Pink;
+                    break;
+                case 11:
+                    ret =Color.Magenta;
+                    break;
+                case 12:
+                    ret =Color.Purple;
+                    break;
+                case 13:
+                    ret =Color.Red;
+                    break;
+                case 14:
+                    ret =Color.Yellow;
+                    break;
+		        default:
+                    break;
+	        }
+            return ret;
+        }
         internal static Object parseDATA(Byte[] data)
         {
             RTS _rts = RTS.Parse(data);

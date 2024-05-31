@@ -1,8 +1,11 @@
-﻿using System;
+﻿using ASRS.Component;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MetroFramework.Controls;
 using System.Windows.Forms;
+using ASRS.Properties;
 
 namespace ASRS
 {
@@ -16,7 +19,8 @@ namespace ASRS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Manager());
+
         }
     }
 }
