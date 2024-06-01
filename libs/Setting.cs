@@ -12,11 +12,10 @@ namespace ASRS.libs
 {
     public class Setting
     {
-        private string _dbName;
         private string _dbPath;
         private static Setting _instance = null;
 
-        Setting():this("","")
+        Setting():this("")
         {
 
         }
@@ -40,46 +39,39 @@ namespace ASRS.libs
                 return _instance;
             }
         }
-        public Setting(string dbPath= "",string dbName ="")
+        public Setting(string dbPath= "")
         {
-            string localPath = Application.StartupPath;
             if (String.IsNullOrEmpty(dbPath))
             {
-                _dbPath = localPath;
-                _dbName = "ASRS_db.accdb";
+                _dbPath = Application.StartupPath + "\\ASRS.accdb";
             }
             else
             {
-                if (!Path.IsPathRooted(dbPath))
-                {
-                    _dbPath = Path.Combine(localPath, _dbPath);
-                }
+                _dbPath = dbPath;
             }
-            
+
             Setting._instance = this;
         }
 
         public string locationDB()
         {
-            return $"{_dbPath}{'\\'}{_dbName}";
+            return $"{_dbPath}";
         }
 
         public string conString
         {
             get
             {
-                if(File.Exists(Path.Combine(_dbPath,_dbName)))
-                {                    
-                    return  $"Provider = Microsoft.ACE.OLEDB.12.0; Data Source ={locationDB()}";
+                if(File.Exists(_dbPath))
+                {
+                    return "Provider=Microsoft.ACE.OLEDB.12.0;" + $"Data Source={_dbPath}";
                 }
                 else
                 {
                     return "";
-                }
-                
+                }                           
             }
         }
-        string connString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=<path to your .mdb>";
 
         ~Setting()
         {

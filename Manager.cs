@@ -17,6 +17,8 @@ using System.Runtime.Remoting.Channels;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using ASRS.Properties;
+using System.Data.OleDb;
+using System.Data.Odbc;
 
 namespace ASRS.Component
 {
@@ -25,7 +27,7 @@ namespace ASRS.Component
         private Splash spash = null;
         private frmUserAccount _userAccountDlg = null;
 
-        private dbAccess db = null;
+        public static dbAccess db = null;
 
         private delegate void screenSwitchingeDelegrate(System.Windows.Forms.Control from);
         screenSwitchingeDelegrate screenSwitch;
@@ -44,6 +46,7 @@ namespace ASRS.Component
             spash.stateChanged += stateChanged;
 
             _userAccountDlg = new frmUserAccount(this.managerStyle);
+            _userAccountDlg.stateChanged += stateChanged;
 
             layoutForm((System.Windows.Forms.Control)spash);
         }
@@ -59,7 +62,7 @@ namespace ASRS.Component
 
             try
             {
-                db.connect(Setting.instance.conString);//Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\10_Work\Robot\ASRS\ASRS_db.accdb
+                db.connect(Setting.instance.conString);
                 m = "Database connection was established!";
             }
             catch(Exception ex)
@@ -71,6 +74,9 @@ namespace ASRS.Component
             {
                 await Task.Delay(1000);
                 spash.showMessage(m);
+
+                await Task.Delay(1000);
+                spash.receiveEvent(SplashEventSubject.completed);
             });
         }
 
@@ -98,11 +104,33 @@ namespace ASRS.Component
                             layoutForm((System.Windows.Forms.Control)_userAccountDlg);
                         }
 
-                        
+                        _userAccountDlg.initialize();
+
+
                         break;
                     case SplashEventSubject.error:
                         break;
                     case SplashEventSubject.finished:
+                        break;
+                    default:
+                        break;
+                }
+            }else if(sender.GetType().Name == "frmUserAccount")
+            {
+                UserAccountEventArg _e = (UserAccountEventArg)e;
+                switch (_e.Reason)
+                {
+                    case UserAccountEventSubject.ready:
+                        
+                        break;
+                    case UserAccountEventSubject.completed:
+
+                        spash.stateChanged -= stateChanged;
+
+                        break;
+                    case UserAccountEventSubject.error:
+                        break;
+                    case UserAccountEventSubject.finished:
                         break;
                     default:
                         break;

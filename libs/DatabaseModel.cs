@@ -42,4 +42,15 @@ namespace ASRS.libs
         public string BayID { get; set; }
         public string SKU_Assigned { get; set; }
     }
+
+    [Table("USER")]
+    public class USER
+    {
+        [PrimaryKey, AutoIncrement]
+        [Column("ID")]
+        public int ID { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
+        public int access_level { get; set; }   
+    }
 }

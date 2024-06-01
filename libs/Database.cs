@@ -29,7 +29,6 @@ namespace ASRS.libs
 
             try
             {
-                //_db = new SQLiteConnection(new SQLiteConnectionString(dbPath, false));
                 _db = new SQLiteConnection(dbPath);
             }
 

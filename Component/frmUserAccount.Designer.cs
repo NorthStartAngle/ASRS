@@ -39,11 +39,40 @@
             this.txt_pwd = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.txt_name = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lbl_status = new System.Windows.Forms.Label();
             lbl_password = new System.Windows.Forms.Label();
             lbl_name = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.styleManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
+            // 
+            // lbl_password
+            // 
+            lbl_password.BackColor = System.Drawing.Color.Transparent;
+            lbl_password.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            lbl_password.ForeColor = System.Drawing.Color.PaleVioletRed;
+            lbl_password.Image = global::ASRS.Properties.Resources.user;
+            lbl_password.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            lbl_password.Location = new System.Drawing.Point(171, 428);
+            lbl_password.Name = "lbl_password";
+            lbl_password.Size = new System.Drawing.Size(142, 37);
+            lbl_password.TabIndex = 14;
+            lbl_password.Text = "password ";
+            lbl_password.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lbl_name
+            // 
+            lbl_name.BackColor = System.Drawing.Color.Transparent;
+            lbl_name.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            lbl_name.ForeColor = System.Drawing.Color.PaleVioletRed;
+            lbl_name.Image = global::ASRS.Properties.Resources.user;
+            lbl_name.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            lbl_name.Location = new System.Drawing.Point(171, 352);
+            lbl_name.Name = "lbl_name";
+            lbl_name.Size = new System.Drawing.Size(142, 37);
+            lbl_name.TabIndex = 13;
+            lbl_name.Text = "user name";
+            lbl_name.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnApply
             // 
@@ -53,7 +82,7 @@
             this.btnApply.Depth = 0;
             this.btnApply.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnApply.Icon = null;
-            this.btnApply.Location = new System.Drawing.Point(504, 515);
+            this.btnApply.Location = new System.Drawing.Point(528, 515);
             this.btnApply.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnApply.Name = "btnApply";
             this.btnApply.Primary = true;
@@ -135,35 +164,6 @@
             this.txt_name.TabStop = false;
             this.txt_name.UseSystemPasswordChar = false;
             // 
-            // lbl_password
-            // 
-            lbl_password.BackColor = System.Drawing.Color.Transparent;
-            lbl_password.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            lbl_password.ForeColor = System.Drawing.Color.PaleVioletRed;
-            lbl_password.Image = global::ASRS.Properties.Resources.user;
-            lbl_password.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            lbl_password.Location = new System.Drawing.Point(171, 428);
-            lbl_password.Name = "lbl_password";
-            lbl_password.Size = new System.Drawing.Size(142, 37);
-            lbl_password.TabIndex = 14;
-            lbl_password.Text = "password ";
-            lbl_password.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // lbl_name
-            // 
-            lbl_name.BackColor = System.Drawing.Color.Transparent;
-            lbl_name.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            lbl_name.ForeColor = System.Drawing.Color.PaleVioletRed;
-            lbl_name.Image = global::ASRS.Properties.Resources.user;
-            lbl_name.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            lbl_name.Location = new System.Drawing.Point(171, 352);
-            lbl_name.Name = "lbl_name";
-            lbl_name.Size = new System.Drawing.Size(142, 37);
-            lbl_name.TabIndex = 13;
-            lbl_name.Text = "user name";
-            lbl_name.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            lbl_name.Click += new System.EventHandler(this.label2_Click);
-            // 
             // pictureBox1
             // 
             this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
@@ -174,12 +174,24 @@
             this.pictureBox1.TabIndex = 11;
             this.pictureBox1.TabStop = false;
             // 
+            // lbl_status
+            // 
+            this.lbl_status.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_status.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_status.ForeColor = System.Drawing.Color.Peru;
+            this.lbl_status.Location = new System.Drawing.Point(0, 596);
+            this.lbl_status.Name = "lbl_status";
+            this.lbl_status.Size = new System.Drawing.Size(815, 32);
+            this.lbl_status.TabIndex = 20;
+            this.lbl_status.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // frmUserAccount
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.Controls.Add(this.lbl_status);
             this.Controls.Add(this.txt_name);
             this.Controls.Add(this.txt_pwd);
             this.Controls.Add(lbl_password);
@@ -192,7 +204,7 @@
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "frmUserAccount";
             this.Padding = new System.Windows.Forms.Padding(20, 5, 5, 5);
-            this.Size = new System.Drawing.Size(815, 604);
+            this.Size = new System.Drawing.Size(815, 632);
             this.Style = MetroFramework.MetroColorStyle.Orange;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.UseCustomBackColor = true;
@@ -212,5 +224,6 @@
         private System.Windows.Forms.Label label1;
         private MaterialSkin.Controls.MaterialSingleLineTextField txt_pwd;
         private MaterialSkin.Controls.MaterialSingleLineTextField txt_name;
+        private System.Windows.Forms.Label lbl_status;
     }
 }

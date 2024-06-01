@@ -34,6 +34,11 @@ namespace ASRS.Component
             stateChanged?.Invoke(this, new SplashEventArgs(SplashEventSubject.ready));
         }
 
+        public void receiveEvent(SplashEventSubject e)
+        {
+            stateChanged?.Invoke(this, new SplashEventArgs(e));
+        }
+        
         public void showMessage(string message)
         {
             if(lblStatus.InvokeRequired)
