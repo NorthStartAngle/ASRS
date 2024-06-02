@@ -493,6 +493,16 @@ namespace ASRS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Loading_bar {
+            get {
+                object obj = ResourceManager.GetObject("Loading_bar", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap log_in_sharp_icon {
             get {
                 object obj = ResourceManager.GetObject("log_in_sharp_icon", resourceCulture);
@@ -683,6 +693,46 @@ namespace ASRS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap r_0_0 {
+            get {
+                object obj = ResourceManager.GetObject("r_0_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap r_0_1 {
+            get {
+                object obj = ResourceManager.GetObject("r_0_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap r_1_0 {
+            get {
+                object obj = ResourceManager.GetObject("r_1_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap r_1_1 {
+            get {
+                object obj = ResourceManager.GetObject("r_1_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap redo_64 {
             get {
                 object obj = ResourceManager.GetObject("redo_64", resourceCulture);
@@ -743,6 +793,36 @@ namespace ASRS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap spinner_1 {
+            get {
+                object obj = ResourceManager.GetObject("spinner_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Spinner_2 {
+            get {
+                object obj = ResourceManager.GetObject("Spinner_2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap spinner_3 {
+            get {
+                object obj = ResourceManager.GetObject("spinner_3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap text_sharp_icon {
             get {
                 object obj = ResourceManager.GetObject("text_sharp_icon", resourceCulture);
@@ -776,6 +856,16 @@ namespace ASRS.Properties {
         internal static System.Drawing.Bitmap textbox_frame1 {
             get {
                 object obj = ResourceManager.GetObject("textbox_frame1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap top_border {
+            get {
+                object obj = ResourceManager.GetObject("top_border", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -846,6 +936,16 @@ namespace ASRS.Properties {
         internal static System.Drawing.Bitmap users_people_icon {
             get {
                 object obj = ResourceManager.GetObject("users_people_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap waiting_book {
+            get {
+                object obj = ResourceManager.GetObject("waiting_book", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

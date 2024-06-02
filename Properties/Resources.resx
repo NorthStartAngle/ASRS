@@ -241,6 +241,9 @@
   <data name="list_circle_sharp_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\list_circle_sharp_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Loading_bar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\Loading-bar.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="load_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\load_1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -310,6 +313,18 @@
   <data name="reset_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\reset-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="r_0_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\r_0_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="r_0_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\r_0_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="r_1_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\r_1_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="r_1_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\r_1_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="search" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\search.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -318,6 +333,15 @@
   </data>
   <data name="speedometer_sharp_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\speedometer_sharp_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="spinner_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\spinner-1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Spinner_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\Spinner-2.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="spinner_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\spinner-3.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="textbox_border_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\textbox-border-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -330,6 +354,9 @@
   </data>
   <data name="text_sharp_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\text_sharp_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="top_border" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\top-border.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="trash_sharp_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\trash_sharp_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -351,6 +378,9 @@
   </data>
   <data name="user_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\user-add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="waiting_book" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\res\waiting-book.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="warranty_50" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\res\warranty-50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

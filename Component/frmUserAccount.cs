@@ -37,7 +37,7 @@ namespace ASRS.Component
         public void initialize()
         {
             Task.Run(async () => {
-                await Task.Delay(1000);
+                await Task.Delay(500);
                 stateChanged?.Invoke(this, new UserAccountEventArg(UserAccountEventSubject.ready));
                 getUserIsExisted();
             });

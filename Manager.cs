@@ -49,6 +49,8 @@ namespace ASRS.Component
             _userAccountDlg.stateChanged += stateChanged;
 
             layoutForm((System.Windows.Forms.Control)spash);
+            changeTitle("Initializing");
+            statusBar.Visible = false;
         }
 
         public void Initialize()
@@ -80,6 +82,25 @@ namespace ASRS.Component
             });
         }
 
+        private void changeTitle(string title)
+        {          
+            if (InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate ()
+                {
+                    this.Text = $"ASRS -{title}";
+                    
+                    //System.Windows.Forms.Application.DoEvents();
+                });
+            }
+            else
+            {
+                this.Text = $"ASRS -{title}";
+            }
+
+            this.Invalidate();
+        }
+
         private void stateChanged(object sender,EventArgs e)
         {
             if(sender.GetType().Name == "Splash")
@@ -89,6 +110,7 @@ namespace ASRS.Component
                 {
                     case SplashEventSubject.ready:
                         Initialize();
+                        
                         break;
                     case SplashEventSubject.completed:
                          
@@ -120,20 +142,23 @@ namespace ASRS.Component
                 UserAccountEventArg _e = (UserAccountEventArg)e;
                 switch (_e.Reason)
                 {
-                    case UserAccountEventSubject.ready:                        
+                    case UserAccountEventSubject.ready:
+                        changeTitle("Login");
                         break;
                     case UserAccountEventSubject.apply:
                         Setting.instance.LoginUser = _e.pendingUser;
 
                         if (bodyLayout.InvokeRequired)
                         {
-                            Invoke(screenSwitch, (System.Windows.Forms.Control)_userAccountDlg);
+                            //Invoke(screenSwitch, (System.Windows.Forms.Control)_userAccountDlg);
                             this.Invoke(new MethodInvoker(
                                 delegate () {
                                     _opInbound = new InboundOperator();
                                     _opInbound.stateChanged += _opInbound_stateChanged;
 
                                     layoutForm((System.Windows.Forms.Control)_opInbound);
+                                    statusBar.Visible = true;
+                                    changeTitle($" <{Setting.instance.LoginUser.username}> WorkSpace");
                                 })
                             );
 
@@ -144,6 +169,8 @@ namespace ASRS.Component
                             _opInbound.stateChanged += _opInbound_stateChanged;
 
                             layoutForm((System.Windows.Forms.Control)_opInbound);
+                            statusBar.Visible = true;
+                            changeTitle($" <{Setting.instance.LoginUser.username}> WorkSpace");
                         }
                         break;
                     case UserAccountEventSubject.error:
