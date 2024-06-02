@@ -14,7 +14,7 @@ namespace ASRS.libs
     {
         private string _dbPath;
         private static Setting _instance = null;
-
+        private USER _loginUser = null;
         Setting():this("")
         {
 
@@ -72,6 +72,8 @@ namespace ASRS.libs
                 }                           
             }
         }
+
+        public USER LoginUser { get => _loginUser; set { _loginUser = value; } }
 
         ~Setting()
         {

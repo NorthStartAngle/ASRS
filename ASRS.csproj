@@ -116,6 +116,12 @@
     <Compile Include="Component\frmUserAccount.Designer.cs">
       <DependentUpon>frmUserAccount.cs</DependentUpon>
     </Compile>
+    <Compile Include="Component\InboundOperator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Component\InboundOperator.Designer.cs">
+      <DependentUpon>InboundOperator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Component\ProductLookup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,12 +133,6 @@
     </Compile>
     <Compile Include="Component\Splash.Designer.cs">
       <DependentUpon>Splash.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Component\TextBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Component\TextBox.Designer.cs">
-      <DependentUpon>TextBox.cs</DependentUpon>
     </Compile>
     <Compile Include="libs\ConnectorMetadata.cs" />
     <Compile Include="libs\dbAccess.cs" />
@@ -165,14 +165,14 @@
     <EmbeddedResource Include="Component\frmUserAccount.resx">
       <DependentUpon>frmUserAccount.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Component\InboundOperator.resx">
+      <DependentUpon>InboundOperator.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Component\ProductLookup.resx">
       <DependentUpon>ProductLookup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Component\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Component\TextBox.resx">
-      <DependentUpon>TextBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Manager.resx">
       <DependentUpon>Manager.cs</DependentUpon>

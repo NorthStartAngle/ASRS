@@ -26,7 +26,7 @@ namespace ASRS.Component
     {
         private Splash spash = null;
         private frmUserAccount _userAccountDlg = null;
-
+        private InboundOperator _opInbound = null;
         public static dbAccess db = null;
 
         private delegate void screenSwitchingeDelegrate(System.Windows.Forms.Control from);
@@ -120,22 +120,46 @@ namespace ASRS.Component
                 UserAccountEventArg _e = (UserAccountEventArg)e;
                 switch (_e.Reason)
                 {
-                    case UserAccountEventSubject.ready:
-                        
+                    case UserAccountEventSubject.ready:                        
                         break;
-                    case UserAccountEventSubject.completed:
+                    case UserAccountEventSubject.apply:
+                        Setting.instance.LoginUser = _e.pendingUser;
 
-                        spash.stateChanged -= stateChanged;
+                        if (bodyLayout.InvokeRequired)
+                        {
+                            Invoke(screenSwitch, (System.Windows.Forms.Control)_userAccountDlg);
+                            this.Invoke(new MethodInvoker(
+                                delegate () {
+                                    _opInbound = new InboundOperator();
+                                    _opInbound.stateChanged += _opInbound_stateChanged;
 
+                                    layoutForm((System.Windows.Forms.Control)_opInbound);
+                                })
+                            );
+
+                        }
+                        else
+                        {
+                            _opInbound = new InboundOperator();
+                            _opInbound.stateChanged += _opInbound_stateChanged;
+
+                            layoutForm((System.Windows.Forms.Control)_opInbound);
+                        }
                         break;
                     case UserAccountEventSubject.error:
                         break;
-                    case UserAccountEventSubject.finished:
+                    case UserAccountEventSubject.finish:
+                        spash.stateChanged -= stateChanged;
                         break;
                     default:
                         break;
                 }
             }
+        }
+
+        private void _opInbound_stateChanged(object sender, object e)
+        {
+            throw new NotImplementedException();
         }
 
         protected void layoutForm(System.Windows.Forms.Control form)

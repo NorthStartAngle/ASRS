@@ -46,20 +46,6 @@ namespace ASRS.libs
             }
         }
 
-        /*public (bool succcess, Exception exception) connectByreturn(string strConnection)
-        {
-            using var cn = new OleDbConnection { ConnectionString = strConnection };
-            try
-            {
-                cn.Open();
-                return (true, null);
-            }
-            catch (Exception e)
-            {
-                return (false, e);
-            }
-        }*/
-
         public void RunQueryWithCallBack(string query, Action<OleDbDataReader> proc)
         {
             if (!_isConnected) return;
@@ -80,42 +66,6 @@ namespace ASRS.libs
                 }
             }
         }
-
-        /*public void RunQuery(string query)
-        {
-            OdbcCommand command = new OdbcCommand(query);
-
-            using (OdbcConnection connection = new OdbcConnection(ConnectionString))
-            {
-                command.Connection = connection;
-                connection.Open();
-                var reader = command.ExecuteReader();
-            }
-        }*/
-
-        /*public List<ASRS_Inventory> GetPeople(string query)
-        {
-            var people = new List<ASRS_Inventory>();
-            OdbcCommand command = new OdbcCommand(query);
-
-            using (OdbcConnection connection = new OdbcConnection(ConnectionString))
-            {
-                command.Connection = connection;
-                connection.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var person = new ASRS_Inventory();
-                        *//*person.Name = reader.SafeGetString(0);
-                        person.Height = reader.SafeGetDouble(1);
-                        person.IsEmployed = reader.SafeGetBool(2);*//*
-                        people.Add(person);
-                    }
-                };
-            }
-            return people;
-        }*/
 
         public void Dispose()
         {
@@ -139,6 +89,8 @@ namespace ASRS.libs
                 return reader.GetInt32(colIndex);
             return 0;
         }
+
+
         public static double SafeGetDouble(this OleDbDataReader reader, int colIndex)
         {
             if (!reader.IsDBNull(colIndex))

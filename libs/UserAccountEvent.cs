@@ -9,21 +9,23 @@ namespace ASRS.libs
     public enum UserAccountEventSubject
     {
         ready,
-        completed,
         error,
-        finished,
-        progress,
+        apply,
+        finish,
     }
 
     public class UserAccountEventArg : EventArgs
     {
-        public UserAccountEventArg(UserAccountEventSubject reason = UserAccountEventSubject.ready, string content = "")
+        public UserAccountEventArg(UserAccountEventSubject reason = UserAccountEventSubject.ready, string content = "", USER PendingUser = null)
         {
             Content = content;
             Reason = reason;
+            pendingUser = PendingUser;
         }
 
         public string Content { get; }
         public UserAccountEventSubject Reason { get; } = UserAccountEventSubject.ready;
+
+        public USER pendingUser;
     }
 }

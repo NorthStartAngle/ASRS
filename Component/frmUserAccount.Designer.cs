@@ -90,6 +90,7 @@
             this.btnApply.TabIndex = 18;
             this.btnApply.Text = " Apply ";
             this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.OnApply_clicked);
             // 
             // btnDismiss
             // 
@@ -176,10 +177,11 @@
             // 
             // lbl_status
             // 
+            this.lbl_status.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lbl_status.BackColor = System.Drawing.Color.Transparent;
             this.lbl_status.Font = new System.Drawing.Font("Myanmar Text", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_status.ForeColor = System.Drawing.Color.Peru;
-            this.lbl_status.Location = new System.Drawing.Point(0, 596);
+            this.lbl_status.Location = new System.Drawing.Point(0, 736);
             this.lbl_status.Name = "lbl_status";
             this.lbl_status.Size = new System.Drawing.Size(815, 32);
             this.lbl_status.TabIndex = 20;
@@ -204,7 +206,7 @@
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "frmUserAccount";
             this.Padding = new System.Windows.Forms.Padding(20, 5, 5, 5);
-            this.Size = new System.Drawing.Size(815, 632);
+            this.Size = new System.Drawing.Size(815, 772);
             this.Style = MetroFramework.MetroColorStyle.Orange;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.UseCustomBackColor = true;
