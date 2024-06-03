@@ -113,6 +113,26 @@ namespace ASRS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Arrows_bar {
+            get {
+                object obj = ResourceManager.GetObject("Arrows_bar", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap back_1 {
+            get {
+                object obj = ResourceManager.GetObject("back_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap backspace_sharp_icon {
             get {
                 object obj = ResourceManager.GetObject("backspace_sharp_icon", resourceCulture);

@@ -113,7 +113,6 @@
             // 
             // btn_Verify
             // 
-            this.btn_Verify.AutoEllipsis = true;
             this.btn_Verify.AutoSize = true;
             this.btn_Verify.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btn_Verify.Depth = 0;
@@ -131,7 +130,6 @@
             // 
             // btn_Shelve
             // 
-            this.btn_Shelve.AutoEllipsis = true;
             this.btn_Shelve.AutoSize = true;
             this.btn_Shelve.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btn_Shelve.Depth = 0;
@@ -198,12 +196,16 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmProductLookup";
+            this.ShadowType = MetroFramework.Forms.MetroFormShadowType.DropShadow;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "ASRS(Canada) - INBOUND Product LookUp";
+            this.Style = MetroFramework.MetroColorStyle.Magenta;
+            this.Text = "INBOUND Product LookUp";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmProductLookup_FormClosing);
+            this.Shown += new System.EventHandler(this.frmProductLookup_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

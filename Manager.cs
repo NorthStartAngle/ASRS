@@ -19,6 +19,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using ASRS.Properties;
 using System.Data.OleDb;
 using System.Data.Odbc;
+using System.Media;
 
 namespace ASRS.Component
 {
@@ -28,6 +29,7 @@ namespace ASRS.Component
         private frmUserAccount _userAccountDlg = null;
         private InboundOperator _opInbound = null;
         public static dbAccess db = null;
+        public static Form AppOwner = null;
 
         private delegate void screenSwitchingeDelegrate(System.Windows.Forms.Control from);
         screenSwitchingeDelegrate screenSwitch;
@@ -51,6 +53,8 @@ namespace ASRS.Component
             layoutForm((System.Windows.Forms.Control)spash);
             changeTitle("Initializing");
             statusBar.Visible = false;
+
+            AppOwner = this;
         }
 
         public void Initialize()
@@ -101,9 +105,36 @@ namespace ASRS.Component
             this.Invalidate();
         }
 
-        private void stateChanged(object sender,EventArgs e)
+        private void soundPlay()
         {
-            if(sender.GetType().Name == "Splash")
+            SoundPlayer simpleSound = new SoundPlayer(@"c:\Windows\Media\chimes.wav");
+            simpleSound.Play();
+        }
+
+        public void setBackGround()
+        {
+            
+        }
+
+        public void stateChanged(object sender,EventArgs e)
+        {
+            if(e.GetType().Name == "DialogEventArgs")
+            {
+                DialogEventArgs _e = (DialogEventArgs)e;
+                switch (_e.Reason)
+                {
+                    case DialogEventReason.showing:
+                        bodyLayout.BackColor = Color.FromArgb(220,220,220,100);
+                        break;
+                    case DialogEventReason.close:
+                        bodyLayout.BackColor = Color.White;
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+            else if(sender.GetType().Name == "Splash")
             {
                 SplashEventArgs _e = (SplashEventArgs)e;
                 switch (_e.Reason)
@@ -157,7 +188,7 @@ namespace ASRS.Component
                                     _opInbound.stateChanged += _opInbound_stateChanged;
 
                                     layoutForm((System.Windows.Forms.Control)_opInbound);
-                                    statusBar.Visible = true;
+                                    //statusBar.Visible = true;
                                     changeTitle($" <{Setting.instance.LoginUser.username}> WorkSpace");
                                 })
                             );
@@ -169,7 +200,7 @@ namespace ASRS.Component
                             _opInbound.stateChanged += _opInbound_stateChanged;
 
                             layoutForm((System.Windows.Forms.Control)_opInbound);
-                            statusBar.Visible = true;
+                            //statusBar.Visible = true;
                             changeTitle($" <{Setting.instance.LoginUser.username}> WorkSpace");
                         }
                         break;
@@ -181,12 +212,11 @@ namespace ASRS.Component
                     default:
                         break;
                 }
-            }
+            } 
         }
-
         private void _opInbound_stateChanged(object sender, object e)
         {
-            throw new NotImplementedException();
+            
         }
 
         protected void layoutForm(System.Windows.Forms.Control form)
@@ -208,5 +238,7 @@ namespace ASRS.Component
                 bodyLayout.ColumnStyles[1].Width = sz.Width;
             }
         }
+    
+
     }
 }

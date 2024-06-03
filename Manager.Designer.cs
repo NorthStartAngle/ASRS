@@ -73,6 +73,7 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(50, 33);
             this.toolStripStatusLabel1.Text = "ZPA";
             this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolStripStatusLabel1.Visible = false;
             // 
             // lbl_zpa
             // 
@@ -94,6 +95,7 @@
             this.toolStripStatusLabel2.Size = new System.Drawing.Size(80, 33);
             this.toolStripStatusLabel2.Text = "Gecko";
             this.toolStripStatusLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolStripStatusLabel2.Visible = false;
             // 
             // lbl_gecko
             // 
@@ -106,7 +108,7 @@
             // managerStyle
             // 
             this.managerStyle.Owner = this;
-            this.managerStyle.Style = MetroFramework.MetroColorStyle.Silver;
+            this.managerStyle.Style = MetroFramework.MetroColorStyle.Lime;
             this.managerStyle.Theme = MetroFramework.MetroThemeStyle.Dark;
             // 
             // bodyLayout

@@ -136,6 +136,7 @@
     </Compile>
     <Compile Include="libs\ConnectorMetadata.cs" />
     <Compile Include="libs\dbAccess.cs" />
+    <Compile Include="libs\DialogEventArgs.cs" />
     <Compile Include="libs\SplashEvent.cs" />
     <Compile Include="libs\SQLite.cs" />
     <Compile Include="libs\Supervisor.cs" />
@@ -460,6 +461,8 @@
     </Content>
     <None Include="res\top-border.png" />
     <None Include="res\Loading-bar.gif" />
+    <None Include="res\back-1.png" />
+    <None Include="res\Arrows bar.gif" />
     <Content Include="res\r_0_0.png" />
     <Content Include="res\r_0_1.png" />
     <Content Include="res\r_1_0.png" />

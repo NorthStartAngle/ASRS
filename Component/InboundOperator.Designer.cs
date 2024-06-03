@@ -28,33 +28,51 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.lbl_Time = new System.Windows.Forms.Label();
+            this.picZPA = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.picZPA)).BeginInit();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // lbl_Time
             // 
-            this.pictureBox1.Image = global::ASRS.Properties.Resources.Placeholder_buddy;
-            this.pictureBox1.Location = new System.Drawing.Point(98, 47);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(734, 565);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this.lbl_Time.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_Time.Font = new System.Drawing.Font("Bahnschrift SemiBold Condensed", 65F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Time.Location = new System.Drawing.Point(845, 566);
+            this.lbl_Time.Name = "lbl_Time";
+            this.lbl_Time.Size = new System.Drawing.Size(875, 120);
+            this.lbl_Time.TabIndex = 2;
+            this.lbl_Time.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // picZPA
+            // 
+            this.picZPA.Image = global::ASRS.Properties.Resources.Arrows_bar;
+            this.picZPA.Location = new System.Drawing.Point(43, 43);
+            this.picZPA.Name = "picZPA";
+            this.picZPA.Size = new System.Drawing.Size(140, 20);
+            this.picZPA.TabIndex = 3;
+            this.picZPA.TabStop = false;
             // 
             // InboundOperator
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.pictureBox1);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
+            this.BackColor = System.Drawing.Color.Transparent;
+            this.BackgroundImage = global::ASRS.Properties.Resources.back_1;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.Controls.Add(this.picZPA);
+            this.Controls.Add(this.lbl_Time);
+            this.DoubleBuffered = true;
             this.Name = "InboundOperator";
-            this.Size = new System.Drawing.Size(896, 684);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.Padding = new System.Windows.Forms.Padding(20);
+            this.Size = new System.Drawing.Size(1720, 706);
+            ((System.ComponentModel.ISupportInitialize)(this.picZPA)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lbl_Time;
+        private System.Windows.Forms.PictureBox picZPA;
     }
 }
