@@ -124,7 +124,7 @@ namespace ASRS.Component
                 switch (_e.Reason)
                 {
                     case DialogEventReason.showing:
-                        bodyLayout.BackColor = Color.FromArgb(220,220,220,100);
+                        bodyLayout.BackColor = Color.FromArgb(240,220,220,220);
                         break;
                     case DialogEventReason.close:
                         bodyLayout.BackColor = Color.White;

@@ -93,7 +93,9 @@
     <Reference Include="MetroFramework.Fonts, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a, processorArchitecture=MSIL">
       <HintPath>packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.Fonts.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
+    <Reference Include="System">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Data.OleDb, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Data.OleDb.8.0.0\lib\net462\System.Data.OleDb.dll</HintPath>
@@ -152,7 +154,6 @@
     <Compile Include="libs\Common.cs" />
     <Compile Include="libs\ConnectionEventArgs.cs" />
     <Compile Include="libs\Connector.cs" />
-    <Compile Include="libs\Database.cs" />
     <Compile Include="libs\DatabaseModel.cs" />
     <Compile Include="libs\DataReceivedEventArgs.cs" />
     <Compile Include="libs\DataSentEventArgs.cs" />
