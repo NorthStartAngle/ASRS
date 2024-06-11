@@ -7,7 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LIB
+namespace LIBS
 {
     public enum CTXType
     {
@@ -28,9 +28,10 @@ namespace LIB
         public int STX = 0x02;
         public int ETX = 0x03;
         public CTXType CTX;
-
+        public DateTime dt;
         public virtual string Create()
         {
+            dt = DateTime.Now;
             msgId = Common.unique1();
             CTX = CTXType.RDS;
             string strMsgId = msgId.ToString("D10");
@@ -78,7 +79,7 @@ namespace LIB
             return $"{STX.ToString("X2")}|{crc16}|{nameof(CTX)}|{strData}|{ETX.ToString("X2")}";
         }
 
-        public string CreateByParam(ushort[] param, bool workMode)
+        public WTK setParam(ushort[] param, bool workMode)
         {
             if(workMode) // Auto
             {
@@ -109,13 +110,18 @@ namespace LIB
             taskReserved4 = param[18];
             boxHeight = param[19];
             
-            return Create();
+            return this;
+        }
+    
+        public WTK once()
+        {
+            msgId = Common.unique1();return this;
         }
     }
 
-    internal class RTS
+    public class RTS
     {
-        public RTS() { }
+        public RTS() { dt = DateTime.Now; }
         
         public ushort msgId;//10
         public int workMode;
@@ -152,6 +158,8 @@ namespace LIB
         public int actionStatus;//2
 
         public bool status;
+        public DateTime dt;
+
         public static RTS Parse(byte[] data)
         {
             RTS _rts = new RTS();
@@ -203,15 +211,16 @@ namespace LIB
         }
     }
 
-    internal class RTK
+    public class RTK
     {
-        public RTK() { }
+        public RTK() { dt = DateTime.Now; }
 
         public ushort msgId;//10
         public ushort taskId;//10
         public int recvResult;
 
         public bool status;
+        public DateTime dt;
 
         public static RTK Parse(byte[] data)
         {

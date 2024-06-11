@@ -38,8 +38,9 @@
             // lblWaiting
             // 
             this.lblWaiting.AutoEllipsis = true;
-            this.lblWaiting.Image = global::ASRS.Properties.Resources.load_1;
-            this.lblWaiting.Location = new System.Drawing.Point(292, 328);
+            this.lblWaiting.BackColor = System.Drawing.Color.Transparent;
+            this.lblWaiting.Image = global::ASRS.Properties.Resources.Intersection;
+            this.lblWaiting.Location = new System.Drawing.Point(290, 444);
             this.lblWaiting.Name = "lblWaiting";
             this.lblWaiting.Size = new System.Drawing.Size(202, 180);
             this.lblWaiting.TabIndex = 0;
@@ -59,7 +60,7 @@
             // 
             this.lblStatus.Font = new System.Drawing.Font("MS Reference Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStatus.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.lblStatus.Location = new System.Drawing.Point(5, 630);
+            this.lblStatus.Location = new System.Drawing.Point(5, 686);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(783, 23);
             this.lblStatus.TabIndex = 2;
@@ -73,7 +74,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblWaiting);
             this.Name = "Splash";
-            this.Size = new System.Drawing.Size(789, 663);
+            this.Size = new System.Drawing.Size(789, 714);
             this.ResumeLayout(false);
 
         }

@@ -11,7 +11,7 @@ using System.Data.Odbc;
 using System.Data.Common;
 using System.Drawing;
 
-namespace ASRS.libs
+namespace LIBS
 {
     public class dbAccess : IDisposable 
     {        
@@ -56,13 +56,32 @@ namespace ASRS.libs
                 try
                 {
                     connection.Open();
-
                     proc(command.ExecuteReader());
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     proc(null);
+                }
+            }
+        }
+
+        public int  RunQueryWithAffecte(string query)
+        {
+            if (!_isConnected) return -1;
+
+            using (OleDbConnection connection = new OleDbConnection(ConnectionString))
+            {
+                OleDbCommand command = new OleDbCommand(query, connection);
+                try
+                {
+                    connection.Open();
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return -1;
                 }
             }
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ASRS.libs
+namespace LIBS
 {
     public enum SplashEventSubject
     {

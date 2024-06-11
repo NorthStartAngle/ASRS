@@ -1,4 +1,4 @@
-﻿namespace LIB
+﻿namespace LIBS
 {
     /// <summary>
     /// Reason why a client disconnected.

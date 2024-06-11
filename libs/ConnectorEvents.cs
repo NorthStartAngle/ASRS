@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LIB
+namespace LIBS
 {
     /// <summary>
     /// SimpleTcp client events.

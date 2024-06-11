@@ -51,7 +51,7 @@
             lbl_password.BackColor = System.Drawing.Color.Transparent;
             lbl_password.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             lbl_password.ForeColor = System.Drawing.Color.PaleVioletRed;
-            lbl_password.Image = global::ASRS.Properties.Resources.user;
+            lbl_password.Image = global::ASRS.Properties.Resources.locks;
             lbl_password.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             lbl_password.Location = new System.Drawing.Point(171, 428);
             lbl_password.Name = "lbl_password";
@@ -142,6 +142,7 @@
             this.txt_pwd.Size = new System.Drawing.Size(250, 23);
             this.txt_pwd.TabIndex = 17;
             this.txt_pwd.TabStop = false;
+            this.txt_pwd.Text = "123";
             this.txt_pwd.UseSystemPasswordChar = true;
             // 
             // txt_name
@@ -163,6 +164,7 @@
             this.txt_name.Size = new System.Drawing.Size(250, 23);
             this.txt_name.TabIndex = 16;
             this.txt_name.TabStop = false;
+            this.txt_name.Text = "user2";
             this.txt_name.UseSystemPasswordChar = false;
             // 
             // pictureBox1

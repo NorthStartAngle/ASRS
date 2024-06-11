@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace ASRS.libs
+namespace LIBS
 {
     public class Setting
     {

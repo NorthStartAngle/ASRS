@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ASRS.libs
+namespace LIBS
 {
         internal class ConnectorMetadata : IDisposable
         {

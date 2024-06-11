@@ -2,13 +2,44 @@
 using System.Drawing;
 using System.Text;
 
-namespace LIB
+namespace LIBS
 {
     internal static class Common
     {
         static ushort unique_n1 = 0;
         static ushort unique_n2 = 0;
         static ushort unique_n3 = 0;
+
+        public struct Pos
+        {
+            public int row;
+            public int col;
+            public int deep;
+        }
+
+        internal static Pos ConvertToPos(string strRow_Col)
+        {
+            strRow_Col = strRow_Col.Trim();
+            if ( strRow_Col.Length >1 && strRow_Col.Length<4 )
+            {
+                var col = strRow_Col.Substring(0, 1).ToUpper();
+                var _col = Convert.ToChar(col) - 65;
+                if(_col <0 ||  _col > 26 ) throw new Exception();
+
+                var row = strRow_Col.Substring(1);
+                var _row = Convert.ToChar(row[0]) - 48;
+                if (_row < 0 || _row > 9) throw new Exception();
+
+                var _deep = (row.Length ==1)?0: Convert.ToChar(row[1]) - 48;
+                if(_deep != 1 && _deep != 2) throw new Exception();
+
+                return new Pos { row=_row,col= _col,deep= _deep };  
+            }
+            else
+            {
+                throw new Exception();
+            }            
+        }
 
         internal static Color convertStyleToColor(int styles, Color orgin)
         {

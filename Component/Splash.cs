@@ -1,4 +1,4 @@
-﻿using LIB;
+﻿using LIBS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ASRS.libs;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace ASRS.Component

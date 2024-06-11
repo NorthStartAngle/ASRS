@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LIB
+namespace LIBS
 {
     /// <summary>
     /// Arguments for data sent to a connected endpoint.

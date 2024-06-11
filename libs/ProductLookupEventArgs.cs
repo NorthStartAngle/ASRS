@@ -1,21 +1,20 @@
-﻿using LIB;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ASRS.libs
+namespace LIBS
 {
-    public enum DialogEventReason
+    public enum ProductLookupEventReason
     {
         None,
-        showing,
-        close
+        Verified,
+        Shelve
     }
-    public class DialogEventArgs : EventArgs
+    public class ProductLookupEventArgs : EventArgs
     {
-        internal DialogEventArgs(string content, DialogEventReason reason = DialogEventReason.None)
+        internal ProductLookupEventArgs(ProductLookup content, ProductLookupEventReason reason = ProductLookupEventReason.None)
         {
             Content = content;
             Reason = reason;
@@ -24,11 +23,11 @@ namespace ASRS.libs
         /// <summary>
         /// The IP address and port number of the connected peer socket.
         /// </summary>
-        public string Content { get; }
+        public ProductLookup Content { get; }
 
         /// <summary>
         /// The reason for the disconnection, if any.
         /// </summary>
-        public DialogEventReason Reason { get; } = DialogEventReason.None;
+        public ProductLookupEventReason Reason { get; } = ProductLookupEventReason.None;
     }
 }

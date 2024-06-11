@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LIB
+namespace LIBS
 {
     /// <summary>
     /// SimpleTcp client with SSL support.  
@@ -154,6 +154,10 @@ namespace LIB
             {
                 return;
             }
+            else
+            {
+                InitializeClient();
+            }
             
             _tokenSource = new CancellationTokenSource();
             _token = _tokenSource.Token;
@@ -179,9 +183,9 @@ namespace LIB
                 _networkStream.ReadTimeout = 300;
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
 
             _isConnected = true;
@@ -203,6 +207,10 @@ namespace LIB
             if (IsConnected)
             {
                 return;
+            }
+            else
+            {
+                InitializeClient();
             }
             
             _tokenSource = new CancellationTokenSource();
@@ -228,7 +236,7 @@ namespace LIB
                         try
                         {
                             _client.Dispose();
-                            _client = new TcpClient(LocalEndpoint);
+                            _client = new TcpClient();
                             _client.NoDelay = true;
                             _client.ConnectAsync(_serverIp, _serverPort).Wait(1000, connectToken);
                             Logger?.Invoke($"{retryCount} times trying");
@@ -287,6 +295,12 @@ namespace LIB
             _connectionMonitor = Task.Run(ConnectedMonitor, _token);
         }
 
+        private void InitializeClient()
+        {
+            _client = new TcpClient();
+            _client.NoDelay = true;
+        }
+
         public void Disconnect()
         {
             if (!IsConnected)
@@ -335,7 +349,6 @@ namespace LIB
                 SendInternal(data.Length, ms);
             }
         }
-
 
         public void Send(long contentLength, Stream stream)
         {
