@@ -47,7 +47,7 @@
             // 
             // lblPTLSwitch_Status
             // 
-            this.lblPTLSwitch_Status.Location = new System.Drawing.Point(417, 293);
+            this.lblPTLSwitch_Status.Location = new System.Drawing.Point(424, 242);
             this.lblPTLSwitch_Status.Name = "lblPTLSwitch_Status";
             this.lblPTLSwitch_Status.Size = new System.Drawing.Size(64, 64);
             this.lblPTLSwitch_Status.TabIndex = 2;
