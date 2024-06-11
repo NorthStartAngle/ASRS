@@ -89,19 +89,19 @@ namespace ASRS.Component
 
         private void PTL_LIGHT_ON(int BayID, int Color, int delay)
         {
-            /*if (Color == 1)
+            if (Color == 1)
                 lblPTLSwitch_Status.Image = global::ASRS.Properties.Resources.green_led;
-            else if(Color == 2)
+            else if (Color == 2)
                 lblPTLSwitch_Status.Image = global::ASRS.Properties.Resources.red_led;
 
-            Invalidate();*/
+            Invalidate();
         }
 
         private void PTL_LIGHT_OFF(int BayID)
         {
-            /*lblPTLSwitch_Status.Image = global::ASRS.Properties.Resources.black_led;
+            lblPTLSwitch_Status.Image = global::ASRS.Properties.Resources.black_led;
 
-            Invalidate();*/
+            Invalidate();
         }
     }
 }
