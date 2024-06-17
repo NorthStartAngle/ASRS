@@ -1,4 +1,5 @@
 ﻿
+using ASRS.libs;
 using LIBS;
 using MetroFramework.Components;
 using Microsoft.Vbe.Interop.Forms;
@@ -11,20 +12,28 @@ using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static LIBS.Common;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ASRS.Component
 {
     public partial class InboundOperator : MetroFramework.Controls.MetroUserControl
     {
-        public event EventHandler<ProductLookupEventArgs> events;
+        public InbouundOperatorEvents dispatcher;
 
         private string availableLocation = "";
         private string swapLocation = "";
-        private string reservationLocation = "";
+        private string reservationLocation1 = "";
+        private string reservationLocation2 = "";
         private ProductLookup pendingProduct;
+        Task _idleMSGProcessor = null;
+        CancellationTokenSource idleTokenSource = null;
+        CancellationToken _idletoken;
+
+        public List<MSG_GROUP> instructions = new List<MSG_GROUP>();
 
         System.Windows.Forms.Timer myTimer = new System.Windows.Forms.Timer();
         public InboundOperator(MetroStyleManager styler = null)
@@ -56,8 +65,34 @@ namespace ASRS.Component
 
 
             lstBarCodes.Items.AddRange((string[])Manager.AppOwner.stProduct.Select(s => s.Barcodes).ToArray());
+
+            idleTokenSource = new CancellationTokenSource();
+            _idletoken = idleTokenSource.Token;
+            _idletoken.Register(() =>
+            {
+                try
+                {
+                    _idleMSGProcessor.Dispose();
+                }
+                catch (Exception)
+                {
+
+                }
+            });
+            _idleMSGProcessor = Task.Run(IdleProcessing, _idletoken);
         }
 
+        ~InboundOperator()
+        {
+            try
+            {
+                idleTokenSource.Cancel();
+            }
+            catch (Exception)
+            {
+
+            }
+        }
         private void MyTimer_Tick(object sender, EventArgs e)
         {
             lbl_Time.Text = DateTime.Now.ToString("h:mm tt MMMM d,yyyy");
@@ -180,38 +215,17 @@ namespace ASRS.Component
             //events?.Invoke(this, new ProductLookupEventArgs(null, ProductLookupEventReason.Shelve));
         }
 
-        public void OnWakeUpSensor1_ON()
+        private void OnShelve()
         {
-            int availablePos = Manager.AppOwner.inventorys.FindAll(x => !x.getReserveEmpty() && !x.getFull()).Count();
-            if (availablePos > 0)
-            {
-                Invoke((Action)(() => {
-                    showActivate(true, availablePos);
-                    setMode(true);
-                }));
-
-                /*this.Invoke((Action<string>)(message =>
-                {
-                    statusLabel.Text = message;
-                }), "Task Completed!");*/
-
-            }
+            MoveProduct();
         }
 
-        public void OnEndofConveyorSensor2_ON()
-        {
-            //Save product by Gecko
-
-        }
-        private void MoveProduct()
-        {
-
-        }
         private void Inbound_CheckOpenStorages(ProductLookup _product)
         {
             availableLocation = "";
             swapLocation = "";
-            reservationLocation = "";
+            reservationLocation1 = "";
+            reservationLocation2 = "";
             pendingProduct = _product;
 
             int status = 0;
@@ -220,7 +234,7 @@ namespace ASRS.Component
             {
                 if (!Manager.AppOwner.inventorys[index].getReserveEmpty() & !Manager.AppOwner.inventorys[index].getFull())
                 {
-                    if (!Manager.AppOwner.inventorys[index].getDoubleDeep())
+                    if (!Manager.AppOwner.inventorys[index].getDoubleDeep())// when open storage location is not doubledeep
                     {
                         availableLocation = Manager.AppOwner.inventorys[index].getLocation_RowCol();
                         status = 1;
@@ -228,7 +242,7 @@ namespace ASRS.Component
                     }
                     var s = Manager.AppOwner.inventorys[index].getLocation_RowCol();
                     var s1 = s.Substring(s.LastIndexOf('\\') + 1);
-                    if (s1 == "2")
+                    if (s1 == "2")// when open storage location is 2nd location in doubledeep
                     {
                         availableLocation = Manager.AppOwner.inventorys[index].getLocation_RowCol();
                         status = 2;
@@ -250,14 +264,18 @@ namespace ASRS.Component
                             }
                             else
                             {
-                                ASRS_Inventory reserve_location = Manager.AppOwner.inventorys.FindAll(x => x.getReserveEmpty() && !x.getFull()).First<ASRS_Inventory>();
-                                if (reserve_location != null)
+                                //ASRS_Inventory reserve_location = Manager.AppOwner.inventorys.FindAll(x => x.getReserveEmpty() && !x.getFull()).First<ASRS_Inventory>();
+
+                                List<ASRS_Inventory> reserves = Manager.AppOwner.inventorys.FindAll(x => x.getReserveEmpty() && !x.getFull()).Take(2).ToList();
+                                if(reserves!= null)
                                 {
                                     status = -2; break;
                                 }
+
                                 availableLocation = Manager.AppOwner.inventorys[index + 1].getLocation_RowCol();
                                 swapLocation = Manager.AppOwner.inventorys[index].getLocation_RowCol();
-                                reservationLocation = reserve_location.getLocation_RowCol();
+                                reservationLocation1 = reserves[0].getLocation_RowCol();
+                                reservationLocation2 = reserves[1].getLocation_RowCol();
                                 status = 5;
                                 break;
                             }
@@ -278,7 +296,8 @@ namespace ASRS.Component
                     if (status == 5)
                     {
                         _ = Manager.AppOwner.inventorys.Find(x => x.getLocation_RowCol() == swapLocation).setFull(true).save(Manager.db);
-                        _ = Manager.AppOwner.inventorys.Find(x => x.getLocation_RowCol() == reservationLocation).setFull(true).save(Manager.db);
+                        _ = Manager.AppOwner.inventorys.Find(x => x.getLocation_RowCol() == reservationLocation1).setFull(true).save(Manager.db);
+                        _ = Manager.AppOwner.inventorys.Find(x => x.getLocation_RowCol() == reservationLocation2).setFull(true).save(Manager.db);
                     }
                     else
                     {
@@ -292,13 +311,208 @@ namespace ASRS.Component
                 // status =-2 : Reservation location is full, status =-1: Doubledeep configure is missing
                 Invoke((Action)(() => {
                     UnVerified(status);
-                }));                
+                }));
             }
         }
 
-        private void OnShelve()
+        private void MoveProduct()
         {
-            MoveProduct();
+
+        }
+
+        // Event Handlers from Conveyor Sensors
+        public void OnWakeUpSensor1_ON()
+        {
+            int availablePos = Manager.AppOwner.inventorys.FindAll(x => !x.getReserveEmpty() && !x.getFull()).Count();
+            if (availablePos > 0)
+            {
+                Invoke((Action)(() => {
+                    showActivate(true, availablePos);
+                    setMode(true);
+                }));
+
+                /*this.Invoke((Action<string>)(message =>
+                {
+                    statusLabel.Text = message;
+                }), "Task Completed!");*/
+
+            }
+        }
+
+        public void Gecko_StatusChanged(object sender, RTS e)
+        {
+            MSG_GROUP curMSGGROUP = instructions.Find(i => i.status == 2);
+            if (curMSGGROUP == null) return;
+
+            MSG curMSG = curMSGGROUP.Find(i => ((WTK)i).taskId == e.taskId);
+            if (curMSG == null) return;
+
+            if(e.taskStatus ==4)//completed
+            {
+                curMSGGROUP.Remove(curMSG);
+                
+                if (curMSGGROUP.Count() == 0)
+                {
+
+                    instructions.Remove(curMSGGROUP);
+                }
+            }
+
+            dispatcher?.HandleStorageChanged(this, new InboundStatus(curMSGGROUP.product, e.taskStatus+1, curMSGGROUP.totalMSG, curMSGGROUP.Count()));
+        }
+
+        public void Gecko_RecvWTK(object sender, RTK e)
+        {
+            Monitor.Enter(instructions);
+            MSG_GROUP curMSGGROUP = instructions.Find(i => i.status == 1);
+            MSG curMSG = curMSGGROUP.Find(i => ((WTK)i).taskId == e.taskId);
+
+            //curMSGGROUP.Remove(curMSG);
+
+            if (e.recvResult> 0)
+            {
+                curMSGGROUP.status = 3; //Error while direct to Gecko
+
+                dispatcher?.HandleStorageChanged(this, new InboundStatus(curMSGGROUP.product, 10, curMSGGROUP.totalMSG, curMSGGROUP.Count()));
+                instructions.Remove(curMSGGROUP);
+            }
+            else
+            {
+                curMSGGROUP.status = 2;
+                dispatcher?.HandleStorageChanged(this, new InboundStatus(curMSGGROUP.product, 1, curMSGGROUP.totalMSG, curMSGGROUP.Count()));
+            }
+            Monitor.Exit(instructions);
+        }
+
+        public void OnEndofConveyorSensor2_ON()
+        {
+            Monitor.Enter(instructions);
+            MSG_GROUP mg = new MSG_GROUP();
+            mg.product = pendingProduct;
+
+            if (swapLocation == null)
+            {
+                WTK w = createWTK(Manager.AppOwner.subSystem.ZPA, Common.ConvertToPos(availableLocation));
+
+                mg.Add(w);mg.totalMSG = 1;
+            }
+            else
+            {
+                WTK w1 = createWTK(Manager.AppOwner.subSystem.ZPA, Common.ConvertToPos(reservationLocation1));
+                WTK w2 = createWTK(Common.ConvertToPos(availableLocation), Common.ConvertToPos(reservationLocation2));
+                WTK w3 = createWTK(Common.ConvertToPos(reservationLocation1), Common.ConvertToPos(availableLocation));
+                WTK w4 = createWTK(Common.ConvertToPos(reservationLocation2), Common.ConvertToPos(swapLocation));
+
+                mg.Add(w1); mg.Add(w2); mg.Add(w3); mg.Add(w4); mg.totalMSG = mg.Count();
+            }
+
+            instructions.Add(mg);
+
+            Monitor.Exit(instructions);
+        }
+
+        private async void IdleProcessing()
+        {
+            while(!_idletoken.IsCancellationRequested)
+            {
+                await Task.Delay(100, _idletoken).ConfigureAwait(false);
+                if(Manager.AppOwner.gecko.isWTKAvaiable())
+                {
+                    if (instructions.FindAll(item => item.status > 0).Count() == 0)
+                    {
+                        foreach (MSG_GROUP mg in instructions)
+                        {
+                            if (mg.Count > 0)
+                            {
+                                mg.status = 1;
+                                Manager.AppOwner.gecko.setWTK((WTK)mg[0]);
+                                break;
+                            }
+                        }
+                    }
+                }                                
+            }
+        }
+
+        /*
+        public void On_RTK(Object sender, GeckoRTKArgs e)
+        {
+            WTK statusInfo = Manager.AppOwner.gecko._lastSentWTK;
+            
+            switch (e.Content.recvResult)
+            {
+                case 0:
+                    {
+                        Common.Pos _pos = new Common.Pos() { col = statusInfo.toCol,row =statusInfo.toRow ,deep = statusInfo.toDepth};
+                        var location = Common.ConvertFromPos(_pos);
+
+                        WTK instruction = new WTK();
+                        ushort[] param;
+
+                        if (location == availableLocation)
+                        {
+
+                        }else if(location == reservationLocation)
+                        {
+                            Common.Pos fromPOS = Common.ConvertToPos(swapLocation);
+                            Common.Pos ToPOS = Common.ConvertToPos(reservationLocation);
+
+                            param = new ushort[] { (ushort)statusInfo.taskMode, (ushort)fromPOS.row, (ushort)fromPOS.col, (ushort)statusInfo.fromColOffsetDir, (ushort)statusInfo.fromColOffset, (ushort)statusInfo.fromLayer, (ushort)statusInfo.fromDepthMax, (ushort)statusInfo.fromDepth, (ushort)ToPOS.row, (ushort)ToPOS.col, (ushort)statusInfo.toColOffsetDir, (ushort)statusInfo.toColOffset, (ushort)statusInfo.toLayer, (ushort)statusInfo.toDepthMax, (ushort)1, (ushort)statusInfo.boxLength, (ushort)statusInfo.boxWidth, (ushort)statusInfo.taskReserved5, (ushort)statusInfo.taskReserved4, (ushort)statusInfo.boxHeight };
+                        }
+                        else if(location == swapLocation)
+                        {
+
+                        }
+                    }
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                default:
+                    break;
+            }
+    }*/
+
+        private WTK createWTK(Pos toDest)
+        {
+            return createWTK(new Pos()
+            {
+                row = 0,
+                col = 0,
+                deep = 1
+            }, toDest);
+        }
+
+        private WTK createWTK(Pos fromSrc, Pos toDest)
+        {
+            WTK wtk = new WTK()
+            {
+                taskMode = 1,
+                taskId = Common.unique2(),
+                fromRow = fromSrc.row,
+                fromCol = fromSrc.col,
+                fromColOffsetDir = 0,
+                fromColOffset = 0,
+                fromLayer = 1,
+                fromDepthMax = 0,
+                fromDepth = fromSrc.deep,
+                toRow = toDest.row,
+                toCol = toDest.col,
+                toColOffsetDir = 0,
+                toColOffset = 0,
+                toLayer = 1,
+                toDepthMax = 2,
+                toDepth = toDest.deep,
+                boxLength = 18,
+                boxWidth = 36,
+                taskReserved5 = 0,
+                taskReserved4 = 0,
+                boxHeight = 44,
+                dt = DateTime.Now,
+            };
+
+            return wtk;
         }
     }
 }

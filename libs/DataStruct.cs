@@ -21,29 +21,100 @@ namespace LIBS
         RMC,
         CKF
     }
+	
+	public enum Status
+	{
+		Accepting,
+		Accept,
+		Pending,
+		Completed,
+		Error
+	}
 
-    public class WMSG //RDS
+
+    public struct Pos
     {
-        public ushort msgId { get; protected set; }
+        public int row;
+        public int col;
+        public int deep;
+    }
+
+    public class MSG
+    {
+        public ushort msgId;
         public int STX = 0x02;
         public int ETX = 0x03;
         public CTXType CTX;
-        public DateTime dt;
-        public virtual string Create()
+		
+		public Status status;
+		public DateTime dt;
+		public int Interval=300;
+		
+        public MSG(CTXType type)
         {
-            dt = DateTime.Now;
-            msgId = Common.unique1();
-            CTX = CTXType.RDS;
+            CTX = type;
+			status = Status.Accepting;
+			dt = DateTime.Now;
+        }
+		
+		public MSG(MSG other)
+		{
+			msgId = other.msgId;
+			STX = other.STX;
+			ETX = other.ETX;
+			CTX=other.CTX;
+			
+			status=other.status;
+			dt = other.dt;
+			Interval=other.Interval;
+		}
+
+		public MSG NewID()
+		{
+			msgId = Common.unique1();
+			return this;
+		}
+		
+		public MSG SetStatus(Status _status)
+		{
+			status = _status;
+			return this;
+		}
+		
+		public MSG Update(DateTime _dt)
+		{
+			dt = _dt;return this;
+		}
+		
+        public override string ToString()
+        {
+            return "";
+        }
+    }
+
+    public class RDS : MSG
+    {
+		public int consecutiveInterval = 100; 
+        public RDS() : base(CTXType.RDS)
+        {
+        }
+		
+		public RDS(RDS other):base(other)
+        {
+			consecutiveInterval = other.consecutiveInterval;
+        }
+		
+        public override string ToString()
+        {
             string strMsgId = msgId.ToString("D10");
             ushort crc16 = Common.ComputeCRC(Encoding.ASCII.GetBytes(nameof(CTX) + strMsgId));
             return $"{STX.ToString("X2")}|{crc16}|{nameof(CTX)}|{msgId.ToString("D10")}|{ETX.ToString("X2")}";
         }
     }
-
-    public class WTK :  WMSG
+    public class WTK : MSG
     {
         public int taskMode;//2
-        public ushort taskId;//10
+        public ushort taskId = 0;//10
         public int fromRow;//2
         public int fromCol;//4
 
@@ -59,7 +130,7 @@ namespace LIBS
 
         public int toLayer;//2
         public int toDepthMax;//1
-        public int toDelth;//1
+        public int toDepth;//1
         public int boxLength;//4
         public int boxWidth;//4
 
@@ -67,63 +138,99 @@ namespace LIBS
         public int taskReserved4;//2
         public int boxHeight;//4
 
-        public override string Create()
+        public byte workMode = 0;
+		
+        public WTK() : base(CTXType.WTK)
         {
-            msgId = Common.unique1();
-            CTX = CTXType.WTK;
+			Interval = 3000;
+        }
+
+		public WTK(WTK other) : base(other)
+		{
+			taskMode = other.taskMode;//2
+			taskId =  other.taskId;//10
+			fromRow= other.fromRow;//2
+			fromCol= other.fromCol;//4
+
+			fromColOffsetDir= other.fromColOffsetDir;//1
+			fromColOffset= other.fromColOffset;//4
+			fromLayer= other.fromLayer;//2
+			fromDepthMax= other.fromDepthMax;//1
+			fromDepth= other.fromDepth;//1
+			toRow= other.toRow;//2
+			toCol= other.toCol;//4
+			toColOffsetDir= other.toColOffsetDir;//1
+			toColOffset= other.toColOffset;//4
+
+			toLayer= other.toLayer;//2
+			toDepthMax= other.toDepthMax;//1
+			toDepth= other.toDepth;//1
+			boxLength= other.boxLength;//4
+			boxWidth= other.boxWidth;//4
+
+			taskReserved5= other.taskReserved5;//2
+			taskReserved4= other.taskReserved4;//2
+			boxHeight= other.boxHeight;//4
+
+			workMode= other.workMode;
+		}
+		
+		public WTK assignTaskId()
+		{
+			if(workMode == 0)
+			{
+				taskId = Common.unique2(); 
+			}else{
+				taskId = Common.unique3(); 
+			}
+			
+			return this;
+		}
+		
+        public override string ToString()
+        {
             string strMsgId = msgId.ToString("D10");
 
-            string strData = msgId.ToString("D10") + taskMode.ToString("D2") + taskId.ToString("D10") + fromRow.ToString("D2") + fromCol.ToString("D4") + fromColOffsetDir.ToString("D1") + fromColOffset.ToString("D4") + fromLayer.ToString("D2") + fromDepthMax.ToString("D1") + fromDepth.ToString("D1") + toRow.ToString("D2") + toCol.ToString("D4") + toColOffsetDir.ToString("D1") + toColOffset.ToString("D4") + toLayer.ToString("D2") + toDepthMax.ToString("D1") + toDelth.ToString("D1") + boxLength.ToString("D4") + boxWidth.ToString("D4") + taskReserved5.ToString("D2") + taskReserved4.ToString("D2") + boxHeight.ToString("D4");
+            string strData = msgId.ToString("D10") + taskMode.ToString("D2") + taskId.ToString("D10") + fromRow.ToString("D2") + fromCol.ToString("D4") + fromColOffsetDir.ToString("D1") + fromColOffset.ToString("D4") + fromLayer.ToString("D2") + fromDepthMax.ToString("D1") + fromDepth.ToString("D1") + toRow.ToString("D2") + toCol.ToString("D4") + toColOffsetDir.ToString("D1") + toColOffset.ToString("D4") + toLayer.ToString("D2") + toDepthMax.ToString("D1") + toDepth.ToString("D1") + boxLength.ToString("D4") + boxWidth.ToString("D4") + taskReserved5.ToString("D2") + taskReserved4.ToString("D2") + boxHeight.ToString("D4");
 
             ushort crc16 = Common.ComputeCRC(Encoding.ASCII.GetBytes(nameof(CTX) + strData));
             return $"{STX.ToString("X2")}|{crc16}|{nameof(CTX)}|{strData}|{ETX.ToString("X2")}";
         }
-
-        public WTK setParam(ushort[] param, bool workMode)
-        {
-            if(workMode) // Auto
-            {
-                taskId = Common.unique3();
-            }
-            else // Manual
-            {
-                taskId= Common.unique2();
-            }
-            taskMode = param[0];
-            fromRow = param[1];
-            fromCol = param[2];
-            fromColOffsetDir = param[3];
-            fromColOffset = param[4];
-            fromLayer = param[5];
-            fromDepthMax = param[6];
-            fromDepth = param[7];
-            toRow = param[8];
-            toCol = param[9];
-            toColOffsetDir = param[10];
-            toColOffset = param[11];
-            toLayer = param[12];
-            toDepthMax = param[13];
-            toDelth = param[14];
-            boxLength = param[15];
-            boxWidth = param[16];
-            taskReserved5 = param[17];
-            taskReserved4 = param[18];
-            boxHeight = param[19];
-            
-            return this;
-        }
+    }
     
-        public WTK once()
+    public class ResponseMSG
+    {
+        public ushort msgId;
+        public DateTime dt;
+        public bool isCorrect;
+		
+        public ResponseMSG()
         {
-            msgId = Common.unique1();return this;
+            dt = DateTime.Now;
+        }
+
+        public  static ResponseMSG Parse(byte[] data)
+        {
+			ResponseMSG msg = new ResponseMSG();
+			
+			try{
+				msg.msgId = Common.ReadFromArray(data, 0, 10);
+                msg.isCorrect = true;
+			}catch(Exception)
+			{
+                msg.isCorrect = false;
+			}           
+            
+            return msg;
         }
     }
 
-    public class RTS
+    public class RTS : ResponseMSG
     {
-        public RTS() { dt = DateTime.Now; }
+        public RTS():base()
+        {
+        }
         
-        public ushort msgId;//10
         public int workMode;
         public int pickStatus;
         public int putStatus;
@@ -157,12 +264,10 @@ namespace LIBS
         public int deviceStatus;//4
         public int actionStatus;//2
 
-        public bool status;
-        public DateTime dt;
-
         public static RTS Parse(byte[] data)
         {
             RTS _rts = new RTS();
+
             try
             {
                 _rts.msgId = Common.ReadFromArray(data, 0, 10);
@@ -199,28 +304,26 @@ namespace LIBS
                 _rts.deviceStatus = Common.ReadFromArray(data, 84, 4);
                 _rts.actionStatus = Common.ReadFromArray(data, 88, 2);
 
-                _rts.status = true;
+				_rts.dt = DateTime.Now;
+                _rts.isCorrect = true;
 
             }
             catch (Exception)
             {
-                _rts.status = false;
+                _rts.isCorrect = false;
             }
 
             return _rts;
         }
     }
 
-    public class RTK
+    public class RTK : ResponseMSG
     {
-        public RTK() { dt = DateTime.Now; }
+        public RTK() : base() { }
 
-        public ushort msgId;//10
         public ushort taskId;//10
         public int recvResult;
 
-        public bool status;
-        public DateTime dt;
 
         public static RTK Parse(byte[] data)
         {
@@ -230,15 +333,64 @@ namespace LIBS
                 _rtk.msgId = Common.ReadFromArray(data, 0, 10);
                 _rtk.taskId = Common.ReadFromArray(data, 10, 10);
                 _rtk.recvResult = Common.ReadFromArray(data, 20, 1);
-
-                _rtk.status = true;
+				
+				_rtk.dt = DateTime.Now;
+                _rtk.isCorrect = true;
             }
             catch (Exception e)
             {
-                _rtk.status = false;
+                _rtk.isCorrect = false;
             }
 
             return _rtk;
         }
+    }
+
+	public class MSG_GROUP : List<MSG>{
+		public ProductLookup product;
+		public int status=0;
+		public int totalMSG =0;
+	}
+
+    public class MSGs : List<MSG>
+    {
+        public string location;
+        public int status = 0;
+        public int lane;
+        public int totalMSG = 0;
+    }
+
+    public class InboundStatus : ProductLookup{
+		public InboundStatus(){}
+		public InboundStatus(ProductLookup other, int _status,int _subProcess,int _remainsProcess){
+            status = _status;
+			subProcess = _subProcess;
+			curProcess=_subProcess - _remainsProcess;
+			
+			ID = other.ID;
+			ProductID = other.ProductID;
+			Image = other.Image;
+			SKU =other.SKU;
+			Barcodes = other.Barcodes;
+		}
+		public int status=0; //0:init,1:Accept,2:Accept new task,3:confirmed,4:progress,5:complete,10:error in accepting,20:error in working
+		public int subProcess;
+		public int curProcess;
+	}
+
+    public class OutboundStatus
+    {
+        public OutboundStatus() { 
+            
+        }
+        public OutboundStatus(string _loc, int _laneIndex,int _status)
+        {
+            location = _loc;
+            laneIndex = _laneIndex;
+            status = _status;
+        }
+        public string location;
+        public int laneIndex;
+        public int status = 0; 
     }
 }

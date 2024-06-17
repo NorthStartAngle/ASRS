@@ -41,11 +41,15 @@ namespace ASRS.Component
 
         public static dbAccess db = null;
         
-        public  GeckoClient gecko = null;
-       
+        public GeckoClient gecko = null;
+        Events _events = new Events();
+
         public List<ProductLookup> stProduct = new List<ProductLookup>();
         public List<ASRS_Inventory> inventorys = new List<ASRS_Inventory>();
         public List<PTL_Bay> ptls = new List<PTL_Bay>();
+        public SubSystem subSystem = null;
+
+        private CancellationTokenSource TooltipCT = new CancellationTokenSource();
 
         private delegate void screenSwitchingeDelegrate(System.Windows.Forms.UserControl from);
         
@@ -60,10 +64,10 @@ namespace ASRS.Component
             this.StyleManager = this.managerStyle;
 
             spash = new Splash();
-            spash.stateChanged += stateChanged;
+            spash.stateChanged += childEventReception;
 
             _userAccountDlg = new frmUserAccount(this.managerStyle);
-            _userAccountDlg.stateChanged += stateChanged;
+            _userAccountDlg.stateChanged += childEventReception;
 
             layoutForm(spash);
             changeTitle("Initializing");
@@ -71,7 +75,7 @@ namespace ASRS.Component
 
             picGeckoIndicator.Visible = false;
             picZPAIndicator.Visible = false;
-
+            picPTL.Visible  = false;
         }
 
         private void Initialize()
@@ -173,6 +177,42 @@ namespace ASRS.Component
                     {
                         if (reader.HasRows)
                         {
+                            subSystem = new SubSystem();
+                            while (reader.Read())
+                            {
+                                subSystem.ID = SafeGetMethods.SafeGetInt(reader, 0);
+
+                                for(int i = 0; i<12; i++)
+                                {
+                                    subSystem.lanes[i].row = Convert.ToInt32(SafeGetMethods.SafeGetString(reader, 1+i*2));
+                                    subSystem.lanes[i].col = Convert.ToChar(SafeGetMethods.SafeGetString(reader, 2 + i * 2).ToUpper()) - 65;
+                                }
+                                subSystem.ZPA.row = Convert.ToInt32(SafeGetMethods.SafeGetString(reader,25));
+                                subSystem.ZPA.col = Convert.ToChar(SafeGetMethods.SafeGetString(reader,26).ToUpper()) - 65;
+                                subSystem.offset.row = SafeGetMethods.SafeGetInt(reader, 27);
+                                subSystem.offset.col = SafeGetMethods.SafeGetInt(reader, 28);
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+
+                    reader?.Close();
+                });
+
+                Manager.db.RunQueryWithCallBack("select * from System order by ID", (OleDbDataReader reader) =>
+                {
+                    if (reader == null)
+                    {
+                        return;
+                    }
+
+                    try
+                    {
+                        if (reader.HasRows)
+                        {
                             while (reader.Read())
                             {
                                 int id = SafeGetMethods.SafeGetInt(reader, 0);
@@ -251,7 +291,7 @@ namespace ASRS.Component
             
         }
 
-        public void stateChanged(object sender,EventArgs e)
+        public void childEventReception(object sender,EventArgs e)
         {
             if (sender.GetType().Name == "Splash")
             {
@@ -264,7 +304,7 @@ namespace ASRS.Component
                         break;
                     case SplashEventSubject.completed:
 
-                        spash.stateChanged -= stateChanged;
+                        spash.stateChanged -= childEventReception;
 
                         Invoke((Action)(() => {
                             layoutForm(_userAccountDlg);
@@ -295,7 +335,7 @@ namespace ASRS.Component
                     case UserAccountEventSubject.error:
                         break;
                     case UserAccountEventSubject.finish:
-                        spash.stateChanged -= stateChanged;
+                        spash.stateChanged -= childEventReception;
                         break;
                     default:
                         break;
@@ -303,7 +343,7 @@ namespace ASRS.Component
             }
             else if (sender.GetType().Name == "InboundOperator")
             {
-                ProductLookupEventArgs _e = (ProductLookupEventArgs)e;
+                /*ProductLookupEventArgs _e = (ProductLookupEventArgs)e;
                 switch (_e.Reason)
                 {
                     case ProductLookupEventReason.Verified:
@@ -313,13 +353,13 @@ namespace ASRS.Component
                         }
                         break;
                     case ProductLookupEventReason.Shelve:
-                        ((InboundOperator)sender).events -= stateChanged;
+                        ((InboundOperator)sender).events -= childEventReception;
                         
                         //OnShelve();
                         break;
                     default:
                         break;
-                }
+                }*/
             }
         }
         
@@ -346,17 +386,22 @@ namespace ASRS.Component
         private void OnUserLogin(USER _login)
         {
             Setting.instance.LoginUser = _login;
-            if(Setting.instance.LoginUser.access_level == 1)
+
+            if (Setting.instance.LoginUser.access_level == 2)
             {
                 picGeckoIndicator.Visible = true;
                 picZPAIndicator.Visible = true;
-                picGeckoIndicator.Enabled = false;
-                picZPAIndicator.Enabled = false;
+                picPTL.Visible = false;
+                //picGeckoIndicator.Enabled = false;
+                //picZPAIndicator.Enabled = false;
 
                 Action del =() =>
                 {
                     _opInbound = new InboundOperator();
-                    _opInbound.events += stateChanged;
+                    _opInbound.dispatcher.inboundStatusChanged += InboundStatusChanged;
+
+                    _events.WTK_RecvResult += _opInbound.Gecko_RecvWTK;
+                    _events.StatusChanged += _opInbound.Gecko_StatusChanged;
 
                     layoutForm(_opInbound);
                     changeTitle($"{Setting.instance.LoginUser.username}");
@@ -366,86 +411,65 @@ namespace ASRS.Component
                 Invoke(del);
 
             }
-            else if(Setting.instance.LoginUser.access_level == 2)
+            else if(Setting.instance.LoginUser.access_level == 3)
             {
                 picGeckoIndicator.Visible = true;
-                picGeckoIndicator.Enabled = false;
-                picZPAIndicator.Visible = false;                
+                //picGeckoIndicator.Enabled = false;
+                picZPAIndicator.Visible = false;
+                picPTL.Visible = true;
 
                 Invoke((Action)(() => {
                     _PTLOperator = new PTLOperator();
                     layoutForm(_PTLOperator);
                     changeTitle($"{Setting.instance.LoginUser.username}");
 
-                    Task.Run(async () => { await Task.Delay(3000); _PTLOperator.PTLSwitch_Pressed(1); });
+                    _events.WTK_RecvResult += _PTLOperator.Gecko_RecvWTK;
+                    _events.StatusChanged += _PTLOperator.Gecko_StatusChanged;
+
+                    Task.Run(async () => { await Task.Delay(3000); _PTLOperator.PTLSwitch_Pressed(2); });
                 }));
-
             }
-
             GeckoSetting();
         }
 
-/// <summary>
-/// Gecko 
-/// </summary>
-/// 
+        private void InboundStatusChanged(object sender, InboundStatus e)
+        {
+            showTooltip($"SKU={e.SKU} storaging is processing {e.status} of {e.curProcess}/{e.subProcess}");
+        }
+
+        /// <summary>
+        /// Gecko 
+        /// </summary>
+        /// 
         private  void GeckoSetting()
         {
             gecko = new GeckoClient();
-            gecko.Events.Connected += Gecko_Connected;
-            gecko.Events.Disconnected += Gecko_Disconnected;
-            gecko.Events.DataSent += Gecko_DataSent;
-            gecko.Events.DataReceived += Events_DataReceived;
-            gecko.Events.DataReceivedStatus += Events_DataReceivedStatus;
-            gecko.Events.DataReceivedWorkStatus += Events_DataReceivedWorkStatus;
-            gecko.Events.StatusChanged += Events_StatusChanged;
-
-            gecko.GeckoSetting();
+            gecko.dispath.Connected += Gecko_Connected;
+            gecko.dispath.Disconnected += Gecko_Disconnected;
+            gecko.dispath.ErrorRecepted += Gecko_ErrorRecepted;
+            gecko.dispath.WTK_RecvResult += Gecko_WTK_RecvResult;
+            gecko.dispath.StatusChanged += Gecko_StatusChanged;
+            gecko.connectGecko();
         }
 
-        private void Events_DataReceived(object sender, LIBS.DataReceivedEventArgs e)
+        private void Gecko_StatusChanged(object sender, RTS e)
         {
-            
+            _events?.HandleStatusChanged(sender,e);
         }
 
-        private void Events_StatusChanged(object sender, int e)
+        private void Gecko_WTK_RecvResult(object sender, RTK e)
         {
-            /*if (status == 5) { content = "Normal"; }
-            if (status == 6) { content = "Status Error"; }
-            if (status == 7) { content = "Status/Work Error"; }
-            if (status == 100) { content = "Disconnected"; MessageBox.Show("Gecko disconnected"); }*/
-            string content;
-            switch (e)
-            {
-                case 5:
-                    content = "Working...";
-                    break;
-                case 6:
-                    content = "Status/Error";
-                    break;
-                case 7:
-                    content = "Working/Error";
-                    break;
-                case 100:
-                    content = "Disconnected";
-                    break;
-                default:
-                    content = "Unknown";
-                    break;
-            }
-            showTooltip(content);
+            _events?.HandleRecvWTK(sender,e);    
         }
 
-        private void Events_DataReceivedWorkStatus(object sender, GeckoRTKArgs e)
+        private void Gecko_ErrorRecepted(object sender, Exception e)
         {
-            
+            showTooltip("Error");
+            Invoke((Action)(() => {
+                picGeckoIndicator.Enabled = false;
+            }));
         }
-
-        private void Events_DataReceivedStatus(object sender, GeckoRTSArgs e)
-        {
-            
-        }
-
+        
         private void Gecko_Connected(object sender, ConnectionEventArgs e)
         {
             showTooltip("Connected");
@@ -454,17 +478,31 @@ namespace ASRS.Component
         private void Gecko_Disconnected(object sender, ConnectionEventArgs e)
         {
             showTooltip("Disconnected");
-        }
 
-        private void Gecko_DataSent(object sender, DataSentEventArgs e)
-        {
-            
+            Invoke((Action)(() => {
+                picGeckoIndicator.Enabled = false;
+            }));
         }
 
         private void showTooltip(string s)
         {
-            Invoke((Action)(() => {
-                System.Windows.Forms.ToolTip toolTip1 = new System.Windows.Forms.ToolTip();
+            TooltipCT.Cancel();
+            TooltipCT = new CancellationTokenSource();
+
+            Invoke((Action)(async () => {
+                lblGeckoStatus.Text = s;
+                try
+                {
+                    await Task.Delay(3000, TooltipCT.Token);
+
+                    // Clear the label text if the delay was not cancelled
+                    lblGeckoStatus.Text = string.Empty;
+                }
+                catch (TaskCanceledException)
+                {
+                    // The task was cancelled, so do nothing
+                }
+                /*System.Windows.Forms.ToolTip toolTip1 = new System.Windows.Forms.ToolTip();
 
                 toolTip1.AutoPopDelay = 2000;
                 toolTip1.InitialDelay = 50;
@@ -474,7 +512,7 @@ namespace ASRS.Component
                 toolTip1.ShowAlways = true;
 
                 // Set up the ToolTip text for the Button and Checkbox.
-                toolTip1.Show(s,picGeckoIndicator,40,-50,1000);
+                toolTip1.Show(s,picGeckoIndicator,40,-50,1000);*/
             }));           
         }
 

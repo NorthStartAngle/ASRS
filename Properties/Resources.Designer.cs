@@ -143,16 +143,6 @@ namespace ASRS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap black_led {
-            get {
-                object obj = ResourceManager.GetObject("black_led", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap calendar_number_sharp_icon {
             get {
                 object obj = ResourceManager.GetObject("calendar_number_sharp_icon", resourceCulture);
@@ -216,6 +206,16 @@ namespace ASRS.Properties {
         internal static System.Drawing.Bitmap check_sign {
             get {
                 object obj = ResourceManager.GetObject("check_sign", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap circle_user {
+            get {
+                object obj = ResourceManager.GetObject("circle_user", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -363,6 +363,16 @@ namespace ASRS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap fault {
+            get {
+                object obj = ResourceManager.GetObject("fault", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap favorite_64 {
             get {
                 object obj = ResourceManager.GetObject("favorite_64", resourceCulture);
@@ -393,9 +403,9 @@ namespace ASRS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap graph_64 {
+        internal static System.Drawing.Bitmap gecko {
             get {
-                object obj = ResourceManager.GetObject("graph_64", resourceCulture);
+                object obj = ResourceManager.GetObject("gecko", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -403,9 +413,9 @@ namespace ASRS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap green_led {
+        internal static System.Drawing.Bitmap graph_64 {
             get {
-                object obj = ResourceManager.GetObject("green_led", resourceCulture);
+                object obj = ResourceManager.GetObject("graph_64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -693,6 +703,26 @@ namespace ASRS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap no_action {
+            get {
+                object obj = ResourceManager.GetObject("no_action", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap normal {
+            get {
+                object obj = ResourceManager.GetObject("normal", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap notifications_circle_sharp_icon {
             get {
                 object obj = ResourceManager.GetObject("notifications_circle_sharp_icon", resourceCulture);
@@ -836,16 +866,6 @@ namespace ASRS.Properties {
         internal static System.Drawing.Bitmap r_1_1 {
             get {
                 object obj = ResourceManager.GetObject("r_1_1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap red_led {
-            get {
-                object obj = ResourceManager.GetObject("red_led", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1076,6 +1096,16 @@ namespace ASRS.Properties {
         internal static System.Drawing.Bitmap warranty_50 {
             get {
                 object obj = ResourceManager.GetObject("warranty_50", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap zpa {
+            get {
+                object obj = ResourceManager.GetObject("zpa", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

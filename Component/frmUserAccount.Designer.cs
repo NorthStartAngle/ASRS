@@ -128,7 +128,7 @@
             // txt_pwd
             // 
             this.txt_pwd.Depth = 0;
-            this.txt_pwd.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_pwd.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_pwd.ForeColor = System.Drawing.Color.Yellow;
             this.txt_pwd.Hint = "";
             this.txt_pwd.Location = new System.Drawing.Point(371, 432);

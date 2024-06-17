@@ -1,4 +1,6 @@
 ﻿using System;
+
+using System;
 using System.Drawing;
 using System.Text;
 
@@ -9,14 +11,7 @@ namespace LIBS
         static ushort unique_n1 = 0;
         static ushort unique_n2 = 0;
         static ushort unique_n3 = 0;
-
-        public struct Pos
-        {
-            public int row;
-            public int col;
-            public int deep;
-        }
-
+       
         internal static Pos ConvertToPos(string strRow_Col)
         {
             strRow_Col = strRow_Col.Trim();
@@ -27,10 +22,11 @@ namespace LIBS
                 if(_col <0 ||  _col > 26 ) throw new Exception();
 
                 var row = strRow_Col.Substring(1);
+                
                 var _row = Convert.ToChar(row[0]) - 48;
                 if (_row < 0 || _row > 9) throw new Exception();
 
-                var _deep = (row.Length ==1)?0: Convert.ToChar(row[1]) - 48;
+                var _deep = (row.Length ==1)?1: Convert.ToChar(row[1]) - 48;
                 if(_deep != 1 && _deep != 2) throw new Exception();
 
                 return new Pos { row=_row,col= _col,deep= _deep };  
@@ -41,77 +37,12 @@ namespace LIBS
             }            
         }
 
-        internal static Color convertStyleToColor(int styles, Color orgin)
+        internal static string ConvertFromPos(Pos pos)
         {
-            Color ret = orgin;
-            switch (styles)
-	        {
-                case 0:
-                    break;
-                case 1:
-                    ret =Color.Black;
-                    break;
-                case 2:
-                    ret =Color.White;
-                    break;
-                case 3:
-                    ret =Color.Silver;
-                    break;
-                case 4:
-                    ret =Color.Blue;
-                    break;
-                case 5:
-                    ret =Color.Green;
-                    break;
-                case 6:
-                    ret =Color.Lime;
-                    break;
-                case 7:
-                    ret =Color.Teal;
-                    break;
-                case 8:
-                    ret =Color.Orange;
-                    break;
-                case 9:
-                    ret =Color.Brown;
-                    break;
-                case 10:
-                    ret =Color.Pink;
-                    break;
-                case 11:
-                    ret =Color.Magenta;
-                    break;
-                case 12:
-                    ret =Color.Purple;
-                    break;
-                case 13:
-                    ret =Color.Red;
-                    break;
-                case 14:
-                    ret =Color.Yellow;
-                    break;
-		        default:
-                    break;
-	        }
-            return ret;
+            var col = (char)(pos.col + 65);
+            return $"{col}{pos.row}{pos.deep}";
         }
-        internal static Object parseDATA(Byte[] data)
-        {
-            RTS _rts = RTS.Parse(data);
-            if(_rts.status)
-            {
-                return _rts;
-            }
-
-            RTK _rtk = RTK.Parse(data);
-            if(_rtk.status)
-            {
-                return _rtk;
-            }
-
-            return null;
-        }
-
+        
         internal static ushort unique1(bool isRepeat = false) 
         {
             if (isRepeat) { return unique_n1; }

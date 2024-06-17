@@ -44,7 +44,7 @@ namespace ASRS.Component
 
         private void getUserIsExisted()
         {
-            Manager.db.RunQueryWithCallBack("select count(*) from user_list", (OleDbDataReader reader) =>
+            Manager.db.RunQueryWithCallBack("select count(*) from USER_LOOKUP", (OleDbDataReader reader) =>
             {
                 if (reader == null)
                 {
@@ -87,7 +87,7 @@ namespace ASRS.Component
 
         private void OnApply_clicked(object sender, EventArgs e)
         {
-            string strQuery = $"select * from user_list where username ='{txt_name.Text.Trim()}' and password='{txt_pwd.Text.Trim()}'";
+            string strQuery = $"select * from USER_LOOKUP where username ='{txt_name.Text.Trim()}' and password='{txt_pwd.Text.Trim()}'";
 
             Manager.db.RunQueryWithCallBack(strQuery, (OleDbDataReader reader) =>
             {
@@ -131,7 +131,6 @@ namespace ASRS.Component
                 {
 
                 }
-
                 reader?.Close();
             });
         }

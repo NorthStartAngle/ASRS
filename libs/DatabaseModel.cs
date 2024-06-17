@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Lane = LIBS.Pos;
+using ZPA = LIBS.Pos;
+using Offsets = LIBS.Pos;
+
 namespace LIBS
 {
     public class ASRS_Inventory
@@ -136,5 +140,27 @@ namespace LIBS
         public string username { get; set; }
         public string password { get; set; }
         public int access_level { get; set; }   
+
+        public string avatar { get; set; }
+
+        public bool save(dbAccess _db)
+        {
+            string strQuery;
+            if (_db != null)
+            {
+                strQuery = $"update USER_LOOKUP SET username='{username}', password='{password}' where ID='{ID}'";
+                return _db.RunQueryWithAffecte(strQuery) == 1 ? true : false;
+            }
+            return false;
+        }
+    }
+
+    public class SubSystem
+    {
+        public int ID { get; set; }
+        public Lane[] lanes = new Lane[12];
+        public ZPA ZPA = new ZPA();
+        public Offsets offset =new Offsets();
+
     }
 }

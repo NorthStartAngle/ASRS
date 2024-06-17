@@ -40,7 +40,7 @@
             this.lblWaiting.AutoEllipsis = true;
             this.lblWaiting.BackColor = System.Drawing.Color.Transparent;
             this.lblWaiting.Image = global::ASRS.Properties.Resources.Intersection;
-            this.lblWaiting.Location = new System.Drawing.Point(290, 444);
+            this.lblWaiting.Location = new System.Drawing.Point(282, 339);
             this.lblWaiting.Name = "lblWaiting";
             this.lblWaiting.Size = new System.Drawing.Size(202, 180);
             this.lblWaiting.TabIndex = 0;
@@ -48,19 +48,20 @@
             // 
             // label1
             // 
-            this.label1.Font = new System.Drawing.Font("Rockwell", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(104, 81);
+            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium Cond", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(57, 65);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(596, 97);
+            this.label1.Size = new System.Drawing.Size(665, 193);
             this.label1.TabIndex = 1;
             this.label1.Text = "Please wait while loading will be completed!";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblStatus
             // 
+            this.lblStatus.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.lblStatus.Font = new System.Drawing.Font("MS Reference Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStatus.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.lblStatus.Location = new System.Drawing.Point(5, 686);
+            this.lblStatus.Location = new System.Drawing.Point(-4, 756);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(783, 23);
             this.lblStatus.TabIndex = 2;
@@ -74,7 +75,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblWaiting);
             this.Name = "Splash";
-            this.Size = new System.Drawing.Size(789, 714);
+            this.Size = new System.Drawing.Size(789, 790);
             this.ResumeLayout(false);
 
         }

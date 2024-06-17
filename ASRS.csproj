@@ -142,12 +142,23 @@
     <Compile Include="Component\Splash.Designer.cs">
       <DependentUpon>Splash.cs</DependentUpon>
     </Compile>
+    <Compile Include="Component\UserItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Component\UserItem.Designer.cs">
+      <DependentUpon>UserItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Component\userManager.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Component\userManager.Designer.cs">
+      <DependentUpon>userManager.cs</DependentUpon>
+    </Compile>
     <Compile Include="GeckoClient.cs" />
     <Compile Include="libs\ConnectorMetadata.cs" />
     <Compile Include="libs\dbAccess.cs" />
-    <Compile Include="libs\GeckoClientEventArgs.cs" />
-    <Compile Include="libs\GeckoEvents.cs" />
-    <Compile Include="libs\ProductLookupEventArgs.cs" />
+    <Compile Include="libs\InbouundOperatorEvents.cs" />
+    <Compile Include="libs\OutboundOperatorEvents.cs" />
     <Compile Include="libs\SelectablePanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -155,6 +166,7 @@
     <Compile Include="libs\ConnectorManager.cs" />
     <Compile Include="libs\SupervisorEvents.cs" />
     <Compile Include="libs\UserAccountEvent.cs" />
+    <Compile Include="libs\UserItemEvents.cs" />
     <Compile Include="Manager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -191,6 +203,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Component\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Component\UserItem.resx">
+      <DependentUpon>UserItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Component\userManager.resx">
+      <DependentUpon>userManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Manager.resx">
       <DependentUpon>Manager.cs</DependentUpon>
@@ -470,6 +488,7 @@
     <Content Include="ASRS.accdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="res\zpa.gif" />
     <None Include="res\top-border.png" />
     <None Include="res\Loading-bar.gif" />
     <None Include="res\back-1.png" />
@@ -486,6 +505,11 @@
     <None Include="res\black_led.png" />
     <None Include="res\green_led.png" />
     <None Include="res\red_led.png" />
+    <None Include="res\fault.png" />
+    <None Include="res\gecko.gif" />
+    <None Include="res\no_action.png" />
+    <None Include="res\normal.png" />
+    <None Include="res\circle-user.png" />
     <Content Include="res\r_0_0.png" />
     <Content Include="res\r_0_1.png" />
     <Content Include="res\r_1_0.png" />

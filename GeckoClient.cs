@@ -1,276 +1,269 @@
-﻿using ASRS.libs;
+﻿using System;
 using LIBS;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Data;
+using System.Diagnostics.Eventing.Reader;
+using System.Diagnostics.Tracing;
 
 namespace ASRS
 {
     public class GeckoClient : IDisposable
     {
-        private Connector Gecko = null;
-        private CancellationTokenSource idleTokenSource = null;
-        private CancellationToken _idletoken;
+        private Connector _conn = null;
 
-        private DateTime _lastActivity = DateTime.Now;
-        private Task _idleServerMonitor = null;
-        private CancellationTokenSource _resendTokenSource = null;
-        private CancellationToken _resendtoken;
+        Task _idleMonitor = null;
+        CancellationTokenSource idleTokenSource = null;
+        CancellationToken _idletoken;
 
-        private WMSG _lastSentRDS = null;
-        private WTK _lastSentWTK = null;
-        private RTS _lastReceivedRTS = null;
-        private RTK _lastReceivedRTK = null;
+        RDS _statusMSG = null;
+        WTK _workMSG = null;
+        Events _dispatcher = new Events();
+        DateTime _lastSentTime = DateTime.Now;
+        DateTime _lastReceivedTime;
 
-        private GeckoEvents _events = new GeckoEvents();
+        bool isInterrupted = false;
 
-        public GeckoClient() {
-            
-        }
+        public GeckoClient() { }
 
-        public void Dispose()
+        public async void connectGecko()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+            _workMSG = null;
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {               
-
-                if (idleTokenSource != null)
-                {
-                    if (!idleTokenSource.IsCancellationRequested)
-                    {
-                        idleTokenSource.Cancel();
-                        idleTokenSource.Dispose();
-                    }
-                }
-
-                if (_resendTokenSource != null)
-                {
-                    if (!_resendTokenSource.IsCancellationRequested)
-                    {
-                        _resendTokenSource.Cancel();
-                        _resendTokenSource.Dispose();
-                    }
-                }
-
-                if (Gecko != null)
-                {
-                    Gecko.Dispose();
-                }
-            }
-        }
-        
-        public async void GeckoSetting()
-        {
-            if (Gecko != null && Gecko.IsConnected)
+            if (_conn != null && _conn.IsConnected)
             {
-                await Gecko.DisconnectAsync();
-                Gecko.Dispose();
+                await _conn.DisconnectAsync();
+                _conn.Dispose();
             }
-            Gecko = new Connector("127.0.0.1", 8899);
- 
-            Gecko.Events.Connected += Gecko_Connected;
-            Gecko.Events.DataReceived += Gecko_DataReceived;
-            Gecko.Events.DataSent += Gecko_DataSent;
-            Gecko.Events.Disconnected += Gecko_Disconnected;
+            _conn = new Connector("127.0.0.1", 8899);
+
+            _conn.Events.Connected += Connected;
+            _conn.Events.DataReceived += DataReceived;
+            _conn.Events.DataSent += DataSent;
+            _conn.Events.Disconnected += Disconnected;
+            _conn.Events.ErrorRecepted += ErrorOccured;
 
             _ = Task.Run(() =>
             {
                 try
                 {
-                    Gecko.Connect();
+                    _conn.Connect();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    _events.HandleStatusChanged(this, 100);
+                    _dispatcher.HandleErrorOccured(this, ex);
                 }
             });
         }
 
-        private void Gecko_Connected(object sender, ConnectionEventArgs e)
+        private void ErrorOccured(object sender, Exception e)
         {
-            Task.Delay(500).ContinueWith(_ => {
-                Invoke((Action)(() => {
-                    _events.HandleConnected(this, e);
-                }));
-            });
+            _dispatcher.HandleErrorOccured(this, e);
+        }
 
-
+        private void Connected(object sender, ConnectionEventArgs e)
+        {
             idleTokenSource = new CancellationTokenSource();
             _idletoken = idleTokenSource.Token;
             _idletoken.Register(() =>
             {
-                //_idleServerMonitor.Dispose();
+                try
+                {
+                    _idleMonitor.Dispose();
+                }
+                catch (Exception)
+                {}
             });
-            _idleServerMonitor = Task.Run(Gecko_IdleMonitor, _idletoken);
-            _lastActivity = DateTime.Now;
+
+            _statusMSG = new RDS();
+            _idleMonitor = Task.Run(_IdleMonitor, _idletoken);
+            _dispatcher.HandleConnected(sender, e);
         }
 
-        private void Gecko_Disconnected(object sender, ConnectionEventArgs e)
+        public void setWTK(WTK msg)
         {
-            if (idleTokenSource != null) { idleTokenSource.Cancel(); }
-
-            if (_resendTokenSource != null) { _resendTokenSource.Cancel(); _resendTokenSource.Dispose(); }
-
-            Invoke((Action)(() => {
-                _events.HandleClientDisconnected(this, e);
-            }));
+            if (msg == null) return;
+            if(_workMSG == null || _workMSG.status == Status.Completed || _workMSG.status == Status.Error)
+            {
+                _workMSG = new WTK(msg);
+                _workMSG.dt = DateTime.Now;
+                _workMSG.status = Status.Accepting;
+            }          
         }
 
-        private void Gecko_DataSend(WMSG msg)
+        public bool isWTKAvaiable()
         {
-            if (!Gecko.IsConnected) return;
-            if (msg.GetType().Name == "WMSG")
+            if (_workMSG == null || _workMSG.status == Status.Completed || _workMSG.status == Status.Error)
             {
-                _lastSentRDS = msg;
-            }
-            else if (msg.GetType().Name == "WTK")
-            {
-                if (_resendTokenSource != null && !_resendtoken.IsCancellationRequested)
-                {
-                    _resendTokenSource.Cancel();
-                    _resendTokenSource.Dispose();
-                }
-
-                _lastSentWTK = (WTK)msg;
-
-                _resendTokenSource = new CancellationTokenSource();
-                _resendtoken = _resendTokenSource.Token;
-                Task.Delay(5000, _resendtoken).ContinueWith(_ =>
-                {
-                    if (!_resendtoken.IsCancellationRequested)
-                    {
-                        Gecko_DataSend(_lastSentWTK.once());
-                    }
-                }).ConfigureAwait(false);
+                return true;
             }
             else
             {
-                return;
-            }
-
-            Gecko.Send(msg.Create());
-        }
-
-        private void Gecko_DataSent(object sender, DataSentEventArgs e)
-        {
-            _events.HandleDataSent(this, e);
-        }
-
-        private void Gecko_DataReceived(object sender, DataReceivedEventArgs e)
-        {
-            _events.HandleDataReceived(this, e);
-
-            _lastActivity = DateTime.Now;
-            if (e.Data.ToArray().Length == 21) //RTS
-            {
-                RTK _rtk = RTK.Parse(e.Data.ToArray());
-                if (_rtk.msgId == _lastSentWTK.msgId && _rtk.taskId == _lastSentWTK.taskId)
-                {
-                    _lastReceivedRTK = _rtk;
-                    _resendTokenSource.Cancel();
-                    _events.HandleWorkDataSent(this, new GeckoRTKArgs(_lastSentWTK.dt, _rtk));
-                }
-            }
-            else if (e.Data.ToArray().Length > 60) // RTK
-            {
-                RTS _rts = RTS.Parse(e.Data.ToArray());
-                if (_rts.msgId == _lastSentRDS.msgId)
-                {
-                    _lastReceivedRTS = _rts;
-                    _events.HandleStatusDataReceived(this, new GeckoRTSArgs(_lastSentRDS.dt, _rts));
-                }
-            }
-            else // error
-            {
-
+                return false;
             }
         }
 
-        private bool Gecko_Storage_Done()
-        {
-            /*if (swapLocation.Length == 0)
-            { 
-                _ = inventorys.Find(x => x.getLocation_RowCol() == availableLocation).setTimeIN(DateTime.Now).setSKU(pendingProduct.SKU).setProductID(pendingProduct.ProductID).setFull(true).save(Manager.db);
-            }
-            else
-            {
-                ASRS_Inventory inventory =inventorys.Find(x => x.getLocation_RowCol() == availableLocation);
-                inventorys.Find(x => x.getLocation_RowCol() == swapLocation).clone(inventory).setTimeIN(DateTime.Now).setFull(true).save(Manager.db);
-                inventory.clone(pendingProduct).setTimeIN(DateTime.Now).setFull(true).save(Manager.db);
-
-                inventorys.Find(x => x.getLocation_RowCol() == reservationLocation).setFull(false).save(Manager.db);
-            }
-*/
-            return true;
-        }
-
-        private async Task Gecko_IdleMonitor()
+        private async Task _IdleMonitor()
         {
             while (!_idletoken.IsCancellationRequested)
             {
-                await Task.Delay(1000, _idletoken).ConfigureAwait(false);
-
-                DateTime timeoutTime = _lastActivity.AddMilliseconds(5000);
-
-                if (DateTime.Now > timeoutTime)
+                await Task.Delay(100, _idletoken).ConfigureAwait(false);
+                if(!isInterrupted)
                 {
-                    int s = 0;
-                    if (_lastSentRDS == null)
+                    DateTime dt1,dt2;
+                    if(_statusMSG != null)
                     {
-                        Gecko_DataSend(new WMSG());                        
-                        s = 0;
-                    }
-                    else if (_lastSentRDS.msgId == (_lastReceivedRTS == null ? 0 : _lastReceivedRTS.msgId))
-                    {
-                        Gecko_DataSend(new WMSG());
-                        s = 0;
+                        if(_statusMSG.status == Status.Accepting)
+                        {
+                            dt1 = _statusMSG.dt;
+                        }else
+                        {
+                            dt1 = _statusMSG.dt.AddMilliseconds(_statusMSG.Interval);
+                        }
+
+                        if(_lastSentTime.AddMilliseconds(_statusMSG.consecutiveInterval) > dt1)
+                        {
+                            dt1 = DateTime.Now.AddDays(1);
+                        }
                     }
                     else
                     {
-                        WMSG msg = new WMSG() { dt = _lastSentRDS.dt };
-                        Gecko_DataSend(msg);
-                        s = 1;
+                        dt1 = DateTime.Now.AddDays(1);
                     }
 
-                    if (_lastSentWTK == null)
+                    if (_workMSG != null)
                     {
-                        s += 5;
-                    }
-                    else if (_lastSentWTK.msgId == (_lastReceivedRTK == null ? 0 : _lastReceivedRTK.msgId))
-                    {
-                        s += 5;
+
+                        if (_workMSG.status == Status.Accepting)
+                        {
+                            dt2 = _workMSG.dt;
+
+                        }
+                        else if(_workMSG.status == Status.Accept)
+                        {
+                            dt2 = _workMSG.dt.AddMilliseconds(_workMSG.Interval);
+                        }
+                        else
+                        {
+                            dt2 = DateTime.Now.AddDays(1);
+                        }
                     }
                     else
                     {
-                        s += 6;
+                        dt2 = DateTime.Now.AddDays(1);
                     }
-                    _events.HandleStatusChanged(this, s);
-                    _lastActivity = DateTime.Now;
+
+                    if(dt1 < dt2)
+                    {
+                        if (DateTime.Now >= dt1)
+                        {
+                            _conn.Send(_statusMSG.NewID().SetStatus(Status.Accept).Update(DateTime.Now).ToString());
+                            _lastSentTime = DateTime.Now;
+                        }        
+                    }else
+                    {
+                        if (DateTime.Now >= dt2)
+                        {
+                            _conn.Send(_workMSG.NewID().SetStatus(Status.Accept).Update(DateTime.Now).ToString());
+                            _lastSentTime = DateTime.Now;
+                        }
+                    }
                 }
             }
         }
-      
-        public GeckoEvents Events
+
+        private void DataReceived(object sender, DataReceivedEventArgs e)
+        {
+            byte[] data = e.Data.ToArray();
+            ResponseMSG res = ResponseMSG.Parse(data);
+            if(res.isCorrect)
+            {
+                _lastReceivedTime = DateTime.Now;
+
+                if (_statusMSG != null)
+                {
+                    if(res.msgId == _statusMSG.msgId)
+                    {
+                        RTS rts = RTS.Parse(data);
+                        if(rts.isCorrect)
+                        {
+                            
+                            _dispatcher.HandleStatusChanged(this, rts);
+                        }
+
+                        return;
+                    }
+                }
+                if(_workMSG != null)
+                {
+                    if (res.msgId == _workMSG.msgId)
+                    {
+                        RTK rtk = RTK.Parse(data);
+                        if (rtk.isCorrect)
+                        {
+                            if(rtk.recvResult == 0)
+                            {
+                                _workMSG.status = Status.Pending;
+                            }
+                            else
+                            {
+                                _workMSG.status = Status.Error;
+                            }
+                            _workMSG = null;
+                            _dispatcher.HandleRecvWTK(this, rtk);
+                        }
+
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void DataSent(object sender, DataSentEventArgs e)
+        {
+            _dispatcher.HandleDataSent(this, e);    
+        }
+
+        private void Disconnected(object sender, ConnectionEventArgs e)
+        {
+            try
+            {
+                _conn.Dispose();
+                _dispatcher.HandleClientDisconnected(this, e);
+            }
+            catch (Exception)
+            {}
+        }
+
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public Connector Conn
         {
             get
             {
-                return _events;
+                return _conn;
             }
-            set
+        }
+        
+        public Events dispath
+        {
+            get => _dispatcher;
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                if (value == null) _events = new GeckoEvents();
-                else _events = value;
+
+                if (_conn != null)
+                {
+                    _conn.Dispose();
+                }
             }
         }
 

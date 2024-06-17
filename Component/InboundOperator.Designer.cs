@@ -109,12 +109,12 @@ namespace ASRS.Component
             this.btnShelve.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnShelve.FlatAppearance.BorderSize = 2;
             this.btnShelve.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShelve.Font = new System.Drawing.Font("Microsoft YaHei UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnShelve.Font = new System.Drawing.Font("Microsoft YaHei UI", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnShelve.Image = global::ASRS.Properties.Resources.log_in_sharp_icon;
             this.btnShelve.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnShelve.Location = new System.Drawing.Point(514, 371);
+            this.btnShelve.Location = new System.Drawing.Point(509, 400);
             this.btnShelve.Name = "btnShelve";
-            this.btnShelve.Size = new System.Drawing.Size(176, 63);
+            this.btnShelve.Size = new System.Drawing.Size(157, 50);
             this.btnShelve.TabIndex = 18;
             this.btnShelve.Text = "Shelve";
             this.btnShelve.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -125,7 +125,7 @@ namespace ASRS.Component
             // 
             this.lblPID.BackColor = System.Drawing.Color.Transparent;
             this.lblPID.Depth = 0;
-            this.lblPID.Font = new System.Drawing.Font("Roboto", 11F);
+            this.lblPID.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.lblPID.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblPID.Location = new System.Drawing.Point(430, 57);
             this.lblPID.MouseState = MaterialSkin.MouseState.HOVER;
@@ -139,7 +139,7 @@ namespace ASRS.Component
             // 
             this.lblSKU.BackColor = System.Drawing.Color.Transparent;
             this.lblSKU.Depth = 0;
-            this.lblSKU.Font = new System.Drawing.Font("Roboto", 11F);
+            this.lblSKU.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.lblSKU.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblSKU.Location = new System.Drawing.Point(82, 57);
             this.lblSKU.MouseState = MaterialSkin.MouseState.HOVER;
@@ -154,12 +154,12 @@ namespace ASRS.Component
             this.btnVerify.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnVerify.FlatAppearance.BorderSize = 2;
             this.btnVerify.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnVerify.Font = new System.Drawing.Font("Microsoft YaHei UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnVerify.Font = new System.Drawing.Font("Microsoft YaHei UI", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnVerify.Image = global::ASRS.Properties.Resources.icons8_verified_48;
             this.btnVerify.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnVerify.Location = new System.Drawing.Point(318, 371);
+            this.btnVerify.Location = new System.Drawing.Point(140, 400);
             this.btnVerify.Name = "btnVerify";
-            this.btnVerify.Size = new System.Drawing.Size(176, 63);
+            this.btnVerify.Size = new System.Drawing.Size(150, 50);
             this.btnVerify.TabIndex = 15;
             this.btnVerify.Text = "Verify";
             this.btnVerify.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -170,20 +170,18 @@ namespace ASRS.Component
             // 
             this.lstBarCodes.BackColor = System.Drawing.Color.White;
             this.lstBarCodes.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lstBarCodes.Font = new System.Drawing.Font("Nirmala UI", 35F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstBarCodes.Font = new System.Drawing.Font("Arial Rounded MT Bold", 26F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstBarCodes.FormattingEnabled = true;
-            this.lstBarCodes.ItemHeight = 62;
+            this.lstBarCodes.ItemHeight = 40;
             this.lstBarCodes.Items.AddRange(new object[] {
             "1111111111",
             "1111111111",
-            "3333333333",
-            "44444444",
-            "555555555"});
-            this.lstBarCodes.Location = new System.Drawing.Point(233, 200);
+            "3333333333"});
+            this.lstBarCodes.Location = new System.Drawing.Point(239, 193);
             this.lstBarCodes.Margin = new System.Windows.Forms.Padding(5);
-            this.lstBarCodes.MaximumSize = new System.Drawing.Size(500, 250);
+            this.lstBarCodes.MaximumSize = new System.Drawing.Size(500, 170);
             this.lstBarCodes.Name = "lstBarCodes";
-            this.lstBarCodes.Size = new System.Drawing.Size(296, 190);
+            this.lstBarCodes.Size = new System.Drawing.Size(323, 164);
             this.lstBarCodes.TabIndex = 14;
             this.lstBarCodes.SelectedIndexChanged += new System.EventHandler(this.lstBarCodes_SelectedIndexChanged);
             this.lstBarCodes.Leave += new System.EventHandler(this.lstBarCodes_Leave);
@@ -196,7 +194,7 @@ namespace ASRS.Component
             this.panel2.Controls.Add(this.txtBarcode);
             this.panel2.Location = new System.Drawing.Point(171, 118);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(388, 80);
+            this.panel2.Size = new System.Drawing.Size(431, 74);
             this.panel2.TabIndex = 0;
             this.panel2.TabStop = true;
             // 
@@ -205,9 +203,10 @@ namespace ASRS.Component
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("MS UI Gothic", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(17, 12);
+            this.label1.Image = global::ASRS.Properties.Resources.search_circle_sharp_icon;
+            this.label1.Location = new System.Drawing.Point(14, 14);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 54);
+            this.label1.Size = new System.Drawing.Size(43, 46);
             this.label1.TabIndex = 19;
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
@@ -217,11 +216,11 @@ namespace ASRS.Component
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBarcode.BackColor = System.Drawing.Color.White;
             this.txtBarcode.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtBarcode.Font = new System.Drawing.Font("Nirmala UI", 35F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBarcode.Location = new System.Drawing.Point(63, 10);
+            this.txtBarcode.Font = new System.Drawing.Font("Arial Rounded MT Bold", 28F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBarcode.Location = new System.Drawing.Point(76, 14);
             this.txtBarcode.MaxLength = 12;
             this.txtBarcode.Name = "txtBarcode";
-            this.txtBarcode.Size = new System.Drawing.Size(282, 63);
+            this.txtBarcode.Size = new System.Drawing.Size(315, 44);
             this.txtBarcode.TabIndex = 13;
             this.txtBarcode.Text = "343423432";
             // 
